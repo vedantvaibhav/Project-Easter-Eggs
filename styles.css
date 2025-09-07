@@ -14,7 +14,13 @@ body {
   margin: 0;
   font-family: "Nunito", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color: var(--text);
-  background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+  /* Layered background: image + subtle gradient fallback */
+  background:
+    linear-gradient(135deg, var(--bg-start), var(--bg-end)),
+    url('./assets/pastel-bg.png');
+  background-size: cover, cover;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
 }
 
 #app { min-height: 100%; display: flex; flex-direction: column; }
@@ -79,7 +85,30 @@ body {
   100% { transform: translate(8px,28px) rotate(14deg); opacity: .9; }
 }
 
-.fortune-panel { display: grid; place-items: center; }
+.burst-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  --burst-x: 50%;
+  --burst-y: 50%;
+  background:
+    radial-gradient(closest-side at var(--burst-x) var(--burst-y), rgba(255,255,255,0.95), rgba(255,255,255,0.6) 40%, rgba(255,255,255,0) 70%),
+    radial-gradient(900px 900px at var(--burst-x) var(--burst-y), rgba(255,215,0,0.28), rgba(255,215,0,0) 60%);
+  mix-blend-mode: screen;
+  transition: opacity .25s ease;
+  z-index: 20;
+}
+.burst-layer.active { opacity: 1; animation: flash 700ms ease forwards; }
+
+@keyframes flash {
+  0% { opacity: 0; filter: blur(0px); }
+  10% { opacity: 1; filter: blur(0px); }
+  60% { opacity: .9; filter: blur(1px); }
+  100% { opacity: 0; filter: blur(2px); }
+}
+
+.fortune-panel { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(0,0,0,.35); backdrop-filter: blur(2px); z-index: 30; }
 .fortune-panel.hidden { display: none; }
 .fortune-card {
   width: min(680px, 92vw);
@@ -90,6 +119,9 @@ body {
   padding: 24px 20px 18px;
   text-align: center;
   position: relative;
+  transform: translateY(10px);
+  opacity: 0;
+  animation: panelIn 420ms ease forwards;
 }
 .fortune-text {
   font-family: "Shippori Antique B1", serif;
@@ -126,6 +158,11 @@ body {
 }
 
 .fortune-card.golden { border: 2px solid #ffd700; box-shadow: 0 16px 36px rgba(255,215,0,.35); }
+
+@keyframes panelIn {
+  from { transform: translateY(16px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
 
 /* Responsive */
 @media (max-width: 920px) {
