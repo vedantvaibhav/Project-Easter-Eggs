@@ -3,39 +3,154 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fortune Cookie Easter Egg Game</title>
+  <title>Project Easter Eggs</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Shippori+Antique+B1&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Baskervville:wght@400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-  <div id="app">
-    <header class="header">
-      <h1>Fortune Cookie Easter Egg</h1>
-      <p class="subtitle">Tap or click an egg to reveal your fortune</p>
-    </header>
-    <main class="game" aria-live="polite">
-      <section class="grid" id="eggGrid" role="list" aria-label="Egg grid (4 by 3)"></section>
-
-      <section class="fortune-panel hidden" id="fortunePanel" aria-hidden="true">
-        <div class="fortune-card">
-          <div class="fortune-ribbon" id="fortuneRibbon" aria-hidden="true"></div>
-          <p id="fortuneText" class="fortune-text" role="status"></p>
-          <div class="actions">
-            <button id="againBtn" class="btn">Try Again</button>
-            <button id="shareBtn" class="btn btn-outline">Share Fortune</button>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="footer">
-      <button id="soundToggle" class="sound-toggle" aria-pressed="false" title="Toggle crack sound">🔊 Sound</button>
-    </footer>
+  <header class="hero">
+    <h1 class="hero-title">Yolk of Truth</h1>
+    <p class="hero-sub">
+      <span>Tap an egg</span>
+      <span class="star" aria-hidden="true">
+        <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7.99999 1.83337L8.86766 5.30404C9.03697 5.98127 9.12162 6.31989 9.29794 6.59543C9.45389 6.83916 9.66088 7.04614 9.9046 7.2021C10.1801 7.37841 10.5188 7.46307 11.196 7.63238L14.6667 8.50004L11.196 9.36771C10.5188 9.53702 10.1801 9.62167 9.9046 9.79798C9.66088 9.95394 9.45389 10.1609 9.29794 10.4046C9.12162 10.6802 9.03697 11.0188 8.86766 11.696L8 15.1667L7.13233 11.696C6.96302 11.0188 6.87837 10.6802 6.70205 10.4046C6.5461 10.1609 6.33911 9.95394 6.09539 9.79798C5.81985 9.62167 5.48123 9.53702 4.80399 9.36771L1.33333 8.50004L4.80399 7.63238C5.48123 7.46307 5.81985 7.37841 6.09539 7.2021C6.33911 7.04614 6.5461 6.83916 6.70205 6.59543C6.87837 6.31989 6.96302 5.98127 7.13233 5.30403L7.99999 1.83337Z" fill="white"/>
+          <path d="M7.99999 1.83337L8.86766 5.30404C9.03697 5.98127 9.12162 6.31989 9.29794 6.59543C9.45389 6.83916 9.66088 7.04614 9.9046 7.2021C10.1801 7.37841 10.5188 7.46307 11.196 7.63238L14.6667 8.50004L11.196 9.36771C10.5188 9.53702 10.1801 9.62167 9.9046 9.79798C9.66088 9.95394 9.45389 10.1609 9.29794 10.4046C9.12162 10.6802 9.03697 11.0188 8.86766 11.696L8 15.1667L7.13233 11.696C6.96302 11.0188 6.87837 10.6802 6.70205 10.4046C6.5461 10.1609 6.33911 9.95394 6.09539 9.79798C5.81985 9.62167 5.48123 9.53702 4.80399 9.36771L1.33333 8.50004L4.80399 7.63238C5.48123 7.46307 5.81985 7.37841 6.09539 7.2021C6.33911 7.04614 6.5461 6.83916 6.70205 6.59543C6.87837 6.31989 6.96302 5.98127 7.13233 5.30403L7.99999 1.83337Z" fill="white"/>
+        </svg>
+      </span>
+      <span>Watch it break</span>
+      <span class="star" aria-hidden="true">
+        <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7.99999 1.83337L8.86766 5.30404C9.03697 5.98127 9.12162 6.31989 9.29794 6.59543C9.45389 6.83916 9.66088 7.04614 9.9046 7.2021C10.1801 7.37841 10.5188 7.46307 11.196 7.63238L14.6667 8.50004L11.196 9.36771C10.5188 9.53702 10.1801 9.62167 9.9046 9.79798C9.66088 9.95394 9.45389 10.1609 9.29794 10.4046C9.12162 10.6802 9.03697 11.0188 8.86766 11.696L8 15.1667L7.13233 11.696C6.96302 11.0188 6.87837 10.6802 6.70205 10.4046C6.5461 10.1609 6.33911 9.95394 6.09539 9.79798C5.81985 9.62167 5.48123 9.53702 4.80399 9.36771L1.33333 8.50004L4.80399 7.63238C5.48123 7.46307 5.81985 7.37841 6.09539 7.2021C6.33911 7.04614 6.5461 6.83916 6.70205 6.59543C6.87837 6.31989 6.96302 5.98127 7.13233 5.30403L7.99999 1.83337Z" fill="white"/>
+          <path d="M7.99999 1.83337L8.86766 5.30404C9.03697 5.98127 9.12162 6.31989 9.29794 6.59543C9.45389 6.83916 9.66088 7.04614 9.9046 7.2021C10.1801 7.37841 10.5188 7.46307 11.196 7.63238L14.6667 8.50004L11.196 9.36771C10.5188 9.53702 10.1801 9.62167 9.9046 9.79798C9.66088 9.95394 9.45389 10.1609 9.29794 10.4046C9.12162 10.6802 9.03697 11.0188 8.86766 11.696L8 15.1667L7.13233 11.696C6.96302 11.0188 6.87837 10.6802 6.70205 10.4046C6.5461 10.1609 6.33911 9.95394 6.09539 9.79798C5.81985 9.62167 5.48123 9.53702 4.80399 9.36771L1.33333 8.50004L4.80399 7.63238C5.48123 7.46307 5.81985 7.37841 6.09539 7.2021C6.33911 7.04614 6.5461 6.83916 6.70205 6.59543C6.87837 6.31989 6.96302 5.98127 7.13233 5.30403L7.99999 1.83337Z" fill="white"/>
+        </svg>
+      </span>
+      <span>Discover your fortune</span>
+    </p>
+  </header>
+  <main class="board" aria-label="Egg selection grid">
+    <section class="egg-grid" role="list" id="eggGrid">
+      <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-01.png" alt="Egg 1" /></div>
+      <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-02.png" alt="Egg 2" /></div>
+      <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-03.png" alt="Egg 3" /></div>
+      <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-04.png" alt="Egg 4" /></div>
+      <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-05.png" alt="Egg 5" /></div>
+      <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-06.png" alt="Egg 6" /></div>
+      <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-07.png" alt="Egg 7" /></div>
+      <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-09.png" alt="Egg 9" /></div>
+      <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-10.png" alt="Egg 10" /></div>
+      <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-01.png" alt="Egg 1" /></div>
+    </section>
+  </main>
+  <div class="cta">
+    <button id="musicToggle" class="music-btn" aria-pressed="false">
+      <span class="icon on" aria-hidden="true">
+        <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g opacity="0.45">
+            <path d="M14.4406 6.92621C15.0558 7.87107 15.4165 9.02017 15.4165 10.2595C15.4165 11.4989 15.0558 12.648 14.4406 13.5929M9.6878 4.73095L7.2256 7.36902C7.09108 7.51314 7.02382 7.58521 6.94533 7.63674C6.87574 7.68243 6.79987 7.7161 6.72051 7.73652C6.631 7.75954 6.53588 7.75954 6.34564 7.75954H4.99444C4.55885 7.75954 4.34105 7.75954 4.17467 7.85037C4.02833 7.93026 3.90934 8.05775 3.83477 8.21455C3.75 8.39281 3.75 8.62616 3.75 9.09288V11.4262C3.75 11.8929 3.75 12.1263 3.83477 12.3045C3.90934 12.4613 4.02833 12.5888 4.17467 12.6687C4.34105 12.7595 4.55885 12.7595 4.99444 12.7595H6.34564C6.53588 12.7595 6.631 12.7595 6.72051 12.7826C6.79987 12.803 6.87574 12.8367 6.94533 12.8823C7.02382 12.9339 7.09108 13.0059 7.2256 13.1501L9.68779 15.7881C10.021 16.1451 10.1876 16.3236 10.3306 16.3357C10.4547 16.3461 10.576 16.2923 10.6568 16.1909C10.75 16.074 10.75 15.8216 10.75 15.3167V5.20235C10.75 4.6975 10.75 4.44508 10.6568 4.32819C10.576 4.22677 10.4547 4.17295 10.3306 4.18342C10.1876 4.19548 10.021 4.37397 9.6878 4.73095Z" stroke="black" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+        </svg>
+      </span>
+      <span class="icon mute" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g opacity="0.45">
+            <path d="M18.3333 7.50002L13.3333 12.5M13.3333 7.50002L18.3333 12.5M8.02859 4.47142L5.39051 7.1095C5.24639 7.25362 5.17432 7.32569 5.09023 7.37722C5.01567 7.42291 4.93438 7.45658 4.84935 7.477C4.75344 7.50002 4.65153 7.50002 4.44771 7.50002H2.99999C2.53328 7.50002 2.29992 7.50002 2.12166 7.59085C1.96486 7.67074 1.83738 7.79823 1.75748 7.95503C1.66666 8.13329 1.66666 8.36664 1.66666 8.83335V11.1667C1.66666 11.6334 1.66666 11.8668 1.75748 12.045C1.83738 12.2018 1.96486 12.3293 2.12166 12.4092C2.29992 12.5 2.53328 12.5 2.99999 12.5H4.44771C4.65153 12.5 4.75344 12.5 4.84935 12.523C4.93438 12.5435 5.01567 12.5771 5.09023 12.6228C5.17432 12.6744 5.24639 12.7464 5.39051 12.8905L8.02859 15.5286C8.38557 15.8856 8.56406 16.0641 8.7173 16.0761C8.85026 16.0866 8.9802 16.0328 9.06683 15.9314C9.16666 15.8145 9.16666 15.5621 9.16666 15.0572V4.94283C9.16666 4.43798 9.16666 4.18556 9.06683 4.06867C8.9802 3.96725 8.85026 3.91343 8.7173 3.92389C8.56406 3.93595 8.38557 4.11444 8.02859 4.47142Z" stroke="black" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+        </svg>
+      </span>
+    </button>
   </div>
 
-  <script src="./app.js"></script>
+  <script>
+  (()=>{
+    // Music toggle
+    const btn = document.getElementById('musicToggle');
+    if(!btn) return;
+    let audioCtx = null; let osc = null; let gain = null; let playing = false;
+    function start() {
+      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      gain = audioCtx.createGain(); gain.gain.value = 0.05;
+      osc = audioCtx.createOscillator(); osc.type = 'sine'; osc.frequency.value = 220;
+      osc.connect(gain).connect(audioCtx.destination); osc.start(); playing = true;
+    }
+    function stop() {
+      try { if (osc) { osc.stop(); osc.disconnect(); } } catch(e){}
+      osc = null; playing = false;
+      if (audioCtx) { /* keep ctx for reuse */ }
+    }
+    function updateUI() {
+      btn.setAttribute('aria-pressed', String(playing));
+    }
+    btn.addEventListener('click', () => {
+      if (!playing) start(); else stop(); updateUI();
+    });
+    updateUI();
+  })();
+  </script>
+
+  <script>
+  // On egg click, bounce then show fortune (no crack effect)
+  (function(){
+    const grid = document.getElementById('eggGrid');
+    if(!grid) return;
+    const fortunes = [
+      'A fresh start will put you on your way.',
+      'Adventure can be real happiness.',
+      'Fortune favors the bold.',
+      'Now is the time to try something new.',
+      'You will conquer obstacles to achieve success.'
+    ];
+    grid.addEventListener('click', (e) => {
+      const tile = e.target.closest('.egg-tile');
+      if (!tile) return;
+      const img = tile.querySelector('.egg-icon');
+      if (img) {
+        // add a class to avoid hover interference
+        img.classList.add('animating');
+        // restart animation reliably
+        img.style.animation = 'none';
+        // force reflow
+        void img.offsetWidth;
+        img.style.animation = 'egg-tilt 420ms cubic-bezier(.34,1.56,.64,1) both, egg-shake-xy 420ms ease-out';
+        setTimeout(()=> img.classList.remove('animating'), 480);
+      }
+      setTimeout(()=>{
+        const overlay = document.getElementById('fortuneOverlay');
+        const fortuneText = document.getElementById('fortuneText');
+        if (!overlay || !fortuneText) return;
+        const msg = fortunes[Math.floor(Math.random()*fortunes.length)];
+        fortuneText.textContent = msg;
+        overlay.classList.remove('hidden','closing');
+        requestAnimationFrame(()=> overlay.classList.add('showing'));
+      }, 420);
+    });
+  })();
+  </script>
+
+  <!-- Fortune overlay -->
+  <div id="fortuneOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="fortuneText">
+    <div class="modal">
+      <p id="fortuneText"></p>
+      <button id="closeFortune" class="close-btn" aria-label="Close">OK</button>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      const overlay = document.getElementById('fortuneOverlay');
+      const closeBtn = document.getElementById('closeFortune');
+      function hide(){
+        if (!overlay) return;
+        overlay.classList.remove('showing');
+        overlay.classList.add('closing');
+        setTimeout(()=>{ overlay.classList.add('hidden'); overlay.classList.remove('closing'); }, 320);
+      }
+      closeBtn?.addEventListener('click', hide);
+      overlay?.addEventListener('click', (e)=>{ if(e.target === overlay) hide(); });
+    })();
+  </script>
 </body>
 </html>
 

@@ -5,6 +5,7 @@
   const againBtn = document.getElementById('againBtn');
   const shareBtn = document.getElementById('shareBtn');
   const ribbon = document.getElementById('fortuneRibbon');
+  const burstLayer = document.getElementById('burstLayer');
   const soundToggle = document.getElementById('soundToggle');
 
   // Fortune messages (24)
@@ -70,12 +71,15 @@
   }
 
   function createEggElement(index, isGolden, gradient) {
-    const li = document.createElement('div');
-    li.className = 'egg' + (isGolden ? ' golden' : '');
-    li.setAttribute('role', 'listitem');
-    li.setAttribute('tabindex', '0');
-    li.setAttribute('aria-label', isGolden ? 'Golden egg' : `Egg ${index + 1}`);
-    li.style.setProperty('--egg-gradient', gradient);
+    const tile = document.createElement('div');
+    tile.className = 'tile';
+
+    const egg = document.createElement('div');
+    egg.className = 'egg' + (isGolden ? ' golden' : '');
+    egg.setAttribute('role', 'listitem');
+    egg.setAttribute('tabindex', '0');
+    egg.setAttribute('aria-label', isGolden ? 'Golden egg' : `Egg ${index + 1}`);
+    egg.style.setProperty('--egg-gradient', gradient);
 
     const inner = document.createElement('div');
     inner.className = 'egg-inner';
@@ -84,14 +88,17 @@
     const bottom = document.createElement('div');
     bottom.className = 'egg-bottom';
     inner.appendChild(top); inner.appendChild(bottom);
-    li.appendChild(inner);
+    egg.appendChild(inner);
+    tile.appendChild(egg);
 
-    li.addEventListener('click', () => openEgg(index));
-    li.addEventListener('keydown', (e) => {
+    egg.addEventListener('click', () => openEgg(index));
+    egg.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openEgg(index); }
       handleArrowKeys(e);
     });
-    return li;
+    // Return egg element for focus/interaction tracking, but append tile to grid
+    Object.defineProperty(egg, '__tile', { value: tile });
+    return egg;
   }
 
   function buildGrid() {
@@ -108,7 +115,7 @@
       const i = order[j];
       const gradient = gradients[j % gradients.length];
       const el = createEggElement(i, i === goldenIndex, gradient);
-      grid.appendChild(el);
+      grid.appendChild(el.__tile || el);
       eggs.push(el);
     }
     focusedIndex = 0;
@@ -132,12 +139,15 @@
 
     if (allowSound) playCrack();
 
-    // After crack animation, show fortune
+    // After crack animation, flash burst, then show fortune overlay
     setTimeout(() => {
-      const isGolden = index === goldenIndex;
-      const text = isGolden ? GOLDEN_FORTUNE : getRandomFortune();
-      showFortune(text, isGolden);
-      isTransitioning = false;
+      triggerBurst(egg);
+      setTimeout(() => {
+        const isGolden = index === goldenIndex;
+        const text = isGolden ? GOLDEN_FORTUNE : getRandomFortune();
+        showFortune(text, isGolden);
+        isTransitioning = false;
+      }, 520);
     }, 650);
   }
 
@@ -148,12 +158,27 @@
   function showFortune(text, isGolden) {
     panel.classList.remove('hidden');
     panel.setAttribute('aria-hidden', 'false');
-    grid.style.display = 'none';
     fortuneText.textContent = '';
     const card = panel.querySelector('.fortune-card');
     card.classList.toggle('golden', !!isGolden);
 
     typeText(fortuneText, text, 18);
+  }
+
+  function triggerBurst(sourceEl) {
+    if (!burstLayer) return;
+    if (sourceEl) {
+      const rect = sourceEl.getBoundingClientRect();
+      const x = rect.left + rect.width / 2;
+      const y = rect.top + rect.height / 2;
+      burstLayer.style.setProperty('--burst-x', `${x}px`);
+      burstLayer.style.setProperty('--burst-y', `${y}px`);
+    }
+    burstLayer.classList.remove('active');
+    // force reflow to restart animation
+    void burstLayer.offsetWidth;
+    burstLayer.classList.add('active');
+    setTimeout(() => burstLayer.classList.remove('active'), 900);
   }
 
   function resetGame() {
