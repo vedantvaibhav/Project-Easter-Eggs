@@ -60,45 +60,56 @@ body {
 @property --shake-x { syntax: '<length>'; inherits: false; initial-value: 0px; }
 @property --shake-y { syntax: '<length>'; inherits: false; initial-value: 0px; }
 .egg-icon {
-  --hover-transform: none;
+  --hover-transform: scale(1) rotate(0deg) rotateY(0deg);
   --shake-x: 0px;
   --shake-y: 0px;
+  --click-tilt-x: 0px;
+  --click-tilt-y: 0px;
+  --click-tilt-rot: 0deg;
+  --swipe-rot: 0deg;
   width: calc(min(140px, 60%) - 15px);
   height: auto;
   display: block;
-  transition: transform .35s ease;
+  transition: transform .35s ease; /* For smooth transition into/out of hover state */
+  transition-property: transform; /* Ensure swipe rotation is immediate */
   will-change: transform;
-  transform: translate(var(--shake-x), var(--shake-y)) var(--hover-transform);
+  /* This order is crucial: click/shake effects first, then swipe rotate, then hover transform */
+  transform: translate(calc(var(--shake-x) + var(--click-tilt-x)), calc(var(--shake-y) + var(--click-tilt-y))) rotate(var(--click-tilt-rot)) rotate(var(--swipe-rot)) var(--hover-transform);
 }
 
 .egg-tile:hover { box-shadow: none; z-index: 3; }
-.egg-tile:hover .egg-icon { --hover-transform: translateX(2px) rotate(-6deg); filter: none; }
-/* When animating via click, suppress hover transform to avoid conflicts */
-.egg-tile:hover .egg-icon.animating { transform: none; animation: none; }
-
-@keyframes egg-bounce {
-  0% { transform: rotate(0deg); }
-  60% { transform: rotate(-10deg); }
-  100% { transform: rotate(-8deg); }
+.egg-tile:hover .egg-icon {
+  --hover-transform: scale(1.28) rotate(-10deg) rotateY(18deg); /* This sets the hover transform */
+  transition: transform .46s cubic-bezier(.34,1.56,.64,1); /* Bouncier transition for hover */
+  filter: none;
+  /* Removed: animation: none !important; and reset of click vars. */
 }
 
-/* Click animation (same motion independent of hover) */
-.egg-icon.bounce-click { animation: egg-tilt 420ms cubic-bezier(.34,1.56,.64,1) both; }
+.egg-tile:hover .egg-icon.animating { --hover-transform: none; /* allow click animation to run; do not cancel animation */ }
+
+@keyframes egg-bounce { /* Updated for hover effect */
+  0% { transform: scale(1) rotate(0deg) rotateY(0deg); }
+  60% { transform: scale(1.32) rotate(-12deg) rotateY(22deg); }
+  100% { transform: scale(1.28) rotate(-18deg) rotateY(18deg); }
+}
+
+/* Click animation (rotate/slide only, no scale) */
+.egg-icon.bounce-click { animation: egg-click-tilt 420ms cubic-bezier(.34,1.56,.64,1) both; }
 .egg-icon.shake-click { animation: egg-shake-xy 420ms ease-out; }
 
 @keyframes egg-shake-xy {
   0% { --shake-x: 0px; --shake-y: 0px; }
-  20% { --shake-x: -2px; --shake-y: 1px; }
-  40% { --shake-x: 2px; --shake-y: -1px; }
-  60% { --shake-x: -1px; --shake-y: 1px; }
-  80% { --shake-x: 1px; --shake-y: -1px; }
+  20% { --shake-x: -4px; --shake-y: 2px; }
+  40% { --shake-x: 4px; --shake-y: -2px; }
+  60% { --shake-x: -3px; --shake-y: 2px; }
+  80% { --shake-x: 3px; --shake-y: -2px; }
   100% { --shake-x: 0px; --shake-y: 0px; }
 }
 
-@keyframes egg-tilt {
-  0% { transform: translateX(0) rotate(0deg); }
-  55% { transform: translateX(3px) rotate(-9deg); }
-  100% { transform: translateX(2px) rotate(-6deg); }
+@keyframes egg-click-tilt {
+  0% { --click-tilt-x: 0px; --click-tilt-y: 0px; --click-tilt-rot: 0deg; }
+  50% { --click-tilt-x: 5px; --click-tilt-y: -3px; --click-tilt-rot: -12deg; }
+  100% { --click-tilt-x: 3px; --click-tilt-y: -2px; --click-tilt-rot: -8deg; }
 }
 
 /* Crack effect */
@@ -150,6 +161,28 @@ body {
   100% { opacity: 0; transform: translateY(16px) scale(.96); }
 }
 
+/* Ripple effect for post-click highlight (updated) */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 40%, transparent 80%);
+  transform: scale(0);
+  animation: ripple-animation 1.5s ease-out forwards;
+  pointer-events: none;
+  filter: blur(2px);
+  z-index: 5;
+}
+
+@keyframes ripple-animation {
+  to {
+    transform: scale(20);
+    opacity: 0;
+  }
+}
+
+/* Disable scroll during ripple */
+.no-scroll { overflow: hidden !important; }
+
 @media (max-width: 900px) { .egg-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 640px) { .egg-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; } }
 
@@ -165,4 +198,116 @@ body {
 .music-btn[aria-pressed="false"] .on { display: none; }
 .music-btn[aria-pressed="false"] .mute { display: inline-flex; }
 /* label removed */
+
+/* Expanding circle rings (wave) */
+.circle {
+  position: absolute;
+  border: 2px solid rgba(255,255,255,0.8);
+  border-radius: 50%;
+  transform: scale(0);
+  animation: expand 1s ease-out forwards;
+  pointer-events: none;
+  z-index: 6;
+}
+
+@keyframes expand {
+  to {
+    transform: scale(5);
+    opacity: 0;
+  }
+}
+
+/* Star particles */
+.star {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.9;
+  animation: fly 1s ease-out forwards;
+  z-index: 6;
+}
+
+@keyframes fly {
+  to {
+    transform: translate(var(--dx), var(--dy)) scale(0.5);
+    opacity: 0;
+  }
+}
+
+/* Default hidden mobile subtext on larger screens */
+.hero-sub-mobile { display: none; }
+
+/* Mobile typography adjustments */
+@media (max-width: 640px) {
+  .hero-title {
+    color: #FFF;
+    font-family: Bonello, "Nunito", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+  .hero-sub { display: none; }
+  .hero-sub-mobile {
+    display: block !important;
+    color: #FFF;
+    text-align: center;
+    font-family: Baskervville, serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-top: 6px;
+  }
+  /* Visual cue for focused egg on mobile */
+  .egg-tile.is-focused .egg-icon {
+    --hover-transform: scale(1.12) rotate(-4deg);
+    transition: transform .25s ease;
+  }
+}
+
+/* Mobile carousel: show parts of adjacent cards */
+@media (max-width: 640px) {
+  .board { padding: 24px 0 48px; }
+  .egg-grid {
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    gap: 16px;
+    padding: 0;
+  }
+  .egg-grid::-webkit-scrollbar { display: none; }
+  .egg-tile {
+    min-width: 70vw;
+    scroll-snap-align: center;
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 12px 24px rgba(0,0,0,.08);
+    display: grid;
+    place-items: center;
+    padding: 150px 16px;
+  }
+  .egg-icon {
+    width: calc(min(180px, 70%) - 15px);
+    height: auto;
+    object-fit: contain;
+  }
+}
+
+/* Mobile swipe rotation - immediate, no transition */
+.egg-icon.swipe-rotating {
+  transition: none !important;
+}
+
+/* Rotate on swipe animation */
+@keyframes focus-rotate {
+  0% { transform: rotate(-8deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* Applied to the focused egg icon briefly on swipe */
+.egg-icon.swipe-rotate { animation: focus-rotate 240ms ease both; }
 

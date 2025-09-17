@@ -29,6 +29,7 @@
       </span>
       <span>Discover your fortune</span>
     </p>
+    <p class="hero-sub-mobile">Discover your fortune</p>
   </header>
   <main class="board" aria-label="Egg selection grid">
     <section class="egg-grid" role="list" id="eggGrid">
@@ -107,24 +108,90 @@
       if (!tile) return;
       const img = tile.querySelector('.egg-icon');
       if (img) {
-        // add a class to avoid hover interference
+        // force hover-like scaled state so egg looks active
+        img.style.setProperty('--hover-transform', 'scale(1.28) rotate(-10deg) rotateY(18deg)');
+        // Shake briefly (optional) - keep subtle or remove if not needed with ripple
         img.classList.add('animating');
-        // restart animation reliably
         img.style.animation = 'none';
-        // force reflow
         void img.offsetWidth;
-        img.style.animation = 'egg-tilt 420ms cubic-bezier(.34,1.56,.64,1) both, egg-shake-xy 420ms ease-out';
-        setTimeout(()=> img.classList.remove('animating'), 480);
+        img.style.animation = 'egg-shake-xy 300ms ease-out';
+        setTimeout(() => { img.classList.remove('animating'); img.style.animation = 'none'; }, 320);
       }
-      setTimeout(()=>{
-        const overlay = document.getElementById('fortuneOverlay');
-        const fortuneText = document.getElementById('fortuneText');
-        if (!overlay || !fortuneText) return;
-        const msg = fortunes[Math.floor(Math.random()*fortunes.length)];
-        fortuneText.textContent = msg;
-        overlay.classList.remove('hidden','closing');
-        requestAnimationFrame(()=> overlay.classList.add('showing'));
-      }, 420);
+
+      // Create ripple centered on the egg tile (sequence of ripples)
+      const rect = tile.getBoundingClientRect();
+      const base = 200; // base size to center offset
+      const centerLeft = rect.left + rect.width / 2;
+      const centerTop = rect.top + rect.height / 2;
+
+      // Disable scroll during VFX sequence
+      document.body.classList.add('no-scroll');
+
+      // Spawn 3 ripple rings (existing)
+      const rippleCount = 3;
+      const rippleDelayMs = 180; // stagger each ripple
+      let remaining = rippleCount;
+
+      function spawnRipple(delayMs){
+        setTimeout(() => {
+          const ripple = document.createElement('div');
+          ripple.className = 'ripple';
+          ripple.style.width = ripple.style.height = `${base}px`;
+          ripple.style.left = `${centerLeft - base / 2}px`;
+          ripple.style.top = `${centerTop - base / 2}px`;
+          document.body.appendChild(ripple);
+          ripple.addEventListener('animationend', () => {
+            ripple.remove();
+            remaining -= 1;
+            if (remaining === 0) {
+              // After ripples, spawn expanding circle rings + star particles
+              // Rings
+              for (let i = 0; i < 3; i++) {
+                const circle = document.createElement('div');
+                circle.className = 'circle';
+                const ringSize = 100 + i * 20;
+                circle.style.left = `${centerLeft - ringSize / 2}px`;
+                circle.style.top = `${centerTop - ringSize / 2}px`;
+                circle.style.width = circle.style.height = `${ringSize}px`;
+                circle.style.animationDuration = `${1 + i * 0.2}s`;
+                document.body.appendChild(circle);
+                circle.addEventListener('animationend', () => circle.remove(), { once: true });
+              }
+              // Stars
+              for (let i = 0; i < 15; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = `${centerLeft}px`;
+                star.style.top = `${centerTop}px`;
+                const angle = Math.random() * 2 * Math.PI;
+                const distance = 100 + Math.random() * 50;
+                const dx = Math.cos(angle) * distance + 'px';
+                const dy = Math.sin(angle) * distance + 'px';
+                star.style.setProperty('--dx', dx);
+                star.style.setProperty('--dy', dy);
+                document.body.appendChild(star);
+                star.addEventListener('animationend', () => star.remove(), { once: true });
+              }
+
+              // Wait for the longest ring animation (~1.4s from now) before enabling scroll and showing overlay
+              setTimeout(() => {
+                document.body.classList.remove('no-scroll');
+                const overlay = document.getElementById('fortuneOverlay');
+                const fortuneText = document.getElementById('fortuneText');
+                if (!overlay || !fortuneText) return;
+                const msg = fortunes[Math.floor(Math.random() * fortunes.length)];
+                fortuneText.textContent = msg;
+                overlay.classList.remove('hidden', 'closing');
+                requestAnimationFrame(() => overlay.classList.add('showing'));
+              }, 1400);
+            }
+          }, { once: true });
+        }, delayMs);
+      }
+
+      for (let i = 0; i < rippleCount; i++) {
+        spawnRipple(i * rippleDelayMs);
+      }
     });
   })();
   </script>
@@ -141,15 +208,223 @@
     (function(){
       const overlay = document.getElementById('fortuneOverlay');
       const closeBtn = document.getElementById('closeFortune');
+      function resetAllEggs() {
+        document.querySelectorAll('.egg-icon').forEach((el) => {
+          // Clear animations
+          el.style.animation = 'none';
+          // Reset click-related CSS variables
+          el.style.setProperty('--click-tilt-x', '0px');
+          el.style.setProperty('--click-tilt-y', '0px');
+          el.style.setProperty('--click-tilt-rot', '0deg');
+          el.style.setProperty('--shake-x', '0px');
+          el.style.setProperty('--shake-y', '0px');
+          // Remove any inline hover-transform so stylesheet controls hover again
+          el.style.removeProperty('--hover-transform');
+          el.classList.remove('animating');
+        });
+      }
       function hide(){
         if (!overlay) return;
         overlay.classList.remove('showing');
         overlay.classList.add('closing');
-        setTimeout(()=>{ overlay.classList.add('hidden'); overlay.classList.remove('closing'); }, 320);
+        setTimeout(()=>{ 
+          overlay.classList.add('hidden'); 
+          overlay.classList.remove('closing');
+          // After closing, reset all eggs to default state
+          resetAllEggs();
+        }, 320);
       }
       closeBtn?.addEventListener('click', hide);
       overlay?.addEventListener('click', (e)=>{ if(e.target === overlay) hide(); });
     })();
+  </script>
+
+  <script>
+  // Mobile swipe carousel: infinite loop with shuffle, one-step swipe, haptics, and rotate effect
+  (function(){
+    const grid = document.getElementById('eggGrid');
+    if (!grid) return;
+
+    const isMobile = () => window.matchMedia('(max-width: 640px)').matches;
+    let initialized = false;
+
+    function shuffleNoAdjDup(nodes){
+      const arr = nodes.slice();
+      // Fisher-Yates with retry to avoid adjacent equal src
+      function hasAdjDup(a){
+        for (let i=1;i<a.length;i++) {
+          const prev = a[i-1].querySelector('img')?.getAttribute('src');
+          const cur = a[i].querySelector('img')?.getAttribute('src');
+          if (prev === cur) return true;
+        }
+        return false;
+      }
+      let attempts = 0;
+      do {
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        attempts++;
+      } while (hasAdjDup(arr) && attempts < 20);
+      // Final pass: if still adj dup, swap offending elements
+      for (let i=1;i<arr.length;i++){
+        const a = arr[i-1].querySelector('img')?.getAttribute('src');
+        const b = arr[i].querySelector('img')?.getAttribute('src');
+        if (a === b) {
+          const k = (i+1) % arr.length;
+          [arr[i], arr[k]] = [arr[k], arr[i]];
+        }
+      }
+      return arr;
+    }
+
+    function initInfiniteCarousel(){
+      if (initialized || !isMobile()) return;
+      initialized = true;
+
+      // Take originals and shuffle to avoid adjacent duplicates
+      const originals = Array.from(grid.children);
+      const shuffled = shuffleNoAdjDup(originals);
+      // Rebuild grid with shuffled originals only once
+      grid.innerHTML = '';
+      shuffled.forEach(n => grid.appendChild(n));
+
+      const originalCount = shuffled.length;
+      if (originalCount === 0) return;
+
+      // Clone one full set on both sides for seamless looping
+      const headFrag = document.createDocumentFragment();
+      const tailFrag = document.createDocumentFragment();
+      shuffled.forEach(node => {
+        const c = node.cloneNode(true); c.setAttribute('data-clone', 'true'); headFrag.appendChild(c);
+      });
+      shuffled.forEach(node => {
+        const c = node.cloneNode(true); c.setAttribute('data-clone', 'true'); tailFrag.appendChild(c);
+      });
+      grid.insertBefore(headFrag, grid.firstChild);
+      grid.appendChild(tailFrag);
+
+      let tiles = Array.from(grid.children);
+      let index = originalCount; // start at first original after head clones
+
+      function setFocusByIndex(i){
+        tiles.forEach((t, idx) => t.classList.toggle('is-focused', idx === i));
+      }
+
+      function rotateEggDuringSwipe(icon, direction){
+        if (!icon) return;
+        // Add class to disable transitions temporarily
+        icon.classList.add('swipe-rotating');
+        // Set rotation based on swipe direction - rotate OUT of center
+        const angle = direction > 0 ? '-12deg' : '12deg';
+        icon.style.setProperty('--swipe-rot', angle);
+      }
+
+      function centerEgg(icon){
+        if (!icon) return;
+        // Return to center (0deg) smoothly
+        icon.style.setProperty('--swipe-rot', '0deg');
+        // Remove class after transition
+        setTimeout(()=>{ 
+          icon.classList.remove('swipe-rotating');
+        }, 300);
+      }
+
+      function scrollToIndex(i, behavior){
+        tiles[i]?.scrollIntoView({ behavior: behavior || 'smooth', inline: 'center', block: 'nearest' });
+        setFocusByIndex(i);
+        // Center the newly focused egg
+        const newIcon = tiles[i]?.querySelector('.egg-icon');
+        centerEgg(newIcon);
+      }
+
+      // Jump to the starting position without animation
+      scrollToIndex(index, 'auto');
+
+      // Debounced scroll-end detection keeps centering and handles loop jumps
+      let scrollTimer = null;
+      grid.addEventListener('scroll', () => {
+        if (scrollTimer) clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(() => {
+          const centerX = grid.scrollLeft + grid.clientWidth / 2;
+          let closestIdx = index;
+          let closestDist = Infinity;
+          tiles.forEach((tile, i) => {
+            const rect = tile.getBoundingClientRect();
+            const gridRect = grid.getBoundingClientRect();
+            const tileCenter = rect.left - gridRect.left + rect.width / 2 + grid.scrollLeft;
+            const dist = Math.abs(tileCenter - centerX);
+            if (dist < closestDist) { closestDist = dist; closestIdx = i; }
+          });
+          index = closestIdx;
+
+          if (index < originalCount) {
+            index += originalCount;
+            scrollToIndex(index, 'auto');
+          } else if (index >= originalCount * 2) {
+            index -= originalCount;
+            scrollToIndex(index, 'auto');
+          } else {
+            setFocusByIndex(index);
+          }
+        }, 80);
+      }, { passive: true });
+
+      // One-step swipe with haptic feedback
+      let startX = 0, startY = 0, tracking = false;
+      const threshold = 24;
+      function haptic(){
+        // Try vibration first
+        if (navigator.vibrate) {
+          navigator.vibrate(10);
+        } else if (window.navigator?.vibrate) {
+          window.navigator.vibrate(10);
+        } else {
+          // Fallback: visual feedback for desktop testing
+          const currentTile = tiles[index];
+          if (currentTile) {
+            currentTile.style.transform = 'scale(0.95)';
+            setTimeout(() => currentTile.style.transform = '', 100);
+          }
+        }
+      }
+      grid.addEventListener('touchstart', (e)=>{
+        if (!e.touches || !e.touches[0]) return;
+        tracking = true;
+        startX = e.touches[0].clientX; startY = e.touches[0].clientY;
+      }, { passive: true });
+      grid.addEventListener('touchmove', (e)=>{
+        if (!tracking || !e.touches || !e.touches[0]) return;
+        const dx = e.touches[0].clientX - startX;
+        const dy = e.touches[0].clientY - startY;
+        if (Math.abs(dx) < threshold && Math.abs(dy) < threshold) return;
+        if (Math.abs(dx) > Math.abs(dy)) {
+          const dir = dx > 0 ? -1 : 1; // step one card
+          // Rotate current egg during swipe
+          const currentIcon = tiles[index]?.querySelector('.egg-icon');
+          rotateEggDuringSwipe(currentIcon, dir);
+          
+          index = Math.min(Math.max(index + dir, 0), tiles.length - 1);
+          scrollToIndex(index, 'smooth');
+          haptic();
+          startX = e.touches[0].clientX; startY = e.touches[0].clientY;
+        }
+      }, { passive: true });
+      grid.addEventListener('touchend', ()=>{ tracking = false; });
+
+      // Tap on centered tile to open fortune
+      grid.addEventListener('touchend', (e)=>{
+        const focused = tiles[index];
+        if (!focused) return;
+        const touchedTile = e.target.closest('.egg-tile');
+        if (touchedTile === focused) focused.click();
+      });
+    }
+
+    if (isMobile()) initInfiniteCarousel();
+    window.addEventListener('resize', () => { if (isMobile()) initInfiniteCarousel(); });
+  })();
   </script>
 </body>
 </html>
