@@ -8,12 +8,23 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: top center;
-  min-height: 100%;
+  min-height: 100vh;
   overflow-y: auto;
   background-attachment: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.hero { text-align: center; padding-top: 64px; }
+.main-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.hero { text-align: center; padding-top: 0; }
 .hero-title {
   margin: 0 0 -16px;
   color: #FFF;
@@ -116,13 +127,42 @@ body {
 .egg-icon.bounce-click { animation: egg-click-tilt 420ms cubic-bezier(.34,1.56,.64,1) both; }
 .egg-icon.shake-click { animation: egg-shake-xy 420ms ease-out; }
 
-@keyframes egg-shake-xy {
-  0% { --shake-x: 0px; --shake-y: 0px; }
-  20% { --shake-x: -4px; --shake-y: 2px; }
-  40% { --shake-x: 4px; --shake-y: -2px; }
-  60% { --shake-x: -3px; --shake-y: 2px; }
-  80% { --shake-x: 3px; --shake-y: -2px; }
-  100% { --shake-x: 0px; --shake-y: 0px; }
+@keyframes egg-click-movement {
+  0% { 
+    --click-tilt-x: 0px; 
+    --click-tilt-y: 0px; 
+    --click-tilt-rot: 0deg; 
+  }
+  15% { 
+    --click-tilt-x: 3px; 
+    --click-tilt-y: -2px; 
+    --click-tilt-rot: -8deg; 
+  }
+  30% { 
+    --click-tilt-x: -2px; 
+    --click-tilt-y: 1px; 
+    --click-tilt-rot: 4deg; 
+  }
+  45% { 
+    --click-tilt-x: 2px; 
+    --click-tilt-y: -1px; 
+    --click-tilt-rot: -6deg; 
+  }
+  60% { 
+    --click-tilt-x: -1px; 
+    --click-tilt-y: 1px; 
+    --click-tilt-rot: 3deg; 
+  }
+  75% { 
+    --click-tilt-x: 1px; 
+    --click-tilt-y: -1px; 
+    --click-tilt-rot: -2deg; 
+  }
+  100% { 
+    --click-tilt-x: 0px; 
+    --click-tilt-y: 0px; 
+    --click-tilt-rot: 0deg; 
+  }
 }
 
 @keyframes egg-click-tilt {
@@ -201,6 +241,39 @@ body {
 
 /* Disable scroll during ripple */
 .no-scroll { overflow: hidden !important; }
+
+/* White radial overlay for message appearance */
+.radial-overlay {
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 30%, rgba(255,255,255,0.4) 60%, transparent 100%);
+  border-radius: 50%;
+  transform: scale(0);
+  animation: radial-expand 1.8s ease-out forwards;
+  pointer-events: none;
+  z-index: 40;
+  filter: blur(1px);
+}
+
+@keyframes radial-expand {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  20% {
+    transform: scale(0.3);
+    opacity: 0.8;
+  }
+  60% {
+    transform: scale(0.8);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
 
 @media (max-width: 900px) { .egg-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 640px) { .egg-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; } }

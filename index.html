@@ -10,52 +10,54 @@
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-  <header class="hero">
-    <h1 class="hero-title">Yolk of Truth</h1>
-    <p class="hero-sub">
-      <span>Tap an egg</span>
-      <span class="star" aria-hidden="true">
-        <img src="./assets/star-05.png" alt="Star" width="16" height="17" />
-      </span>
-      <span>Watch it break</span>
-      <span class="star" aria-hidden="true">
-        <img src="./assets/star-05.png" alt="Star" width="16" height="17" />
-      </span>
-      <span>Discover your fortune</span>
-    </p>
-    <p class="hero-sub-mobile">Discover your fortune</p>
-  </header>
-  <main class="board" aria-label="Egg selection grid">
-    <section class="egg-grid" role="list" id="eggGrid">
-      <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-01.png" alt="Egg 1" /></div>
-      <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-02.png" alt="Egg 2" /></div>
-      <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-03.png" alt="Egg 3" /></div>
-      <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-04.png" alt="Egg 4" /></div>
-      <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-05.png" alt="Egg 5" /></div>
-      <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-06.png" alt="Egg 6" /></div>
-      <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-07.png" alt="Egg 7" /></div>
-      <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-09.png" alt="Egg 9" /></div>
-      <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-10.png" alt="Egg 10" /></div>
-      <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-01.png" alt="Egg 1" /></div>
-    </section>
-  </main>
-  <div class="cta">
-    <button id="musicToggle" class="music-btn" aria-pressed="false">
-      <span class="icon on" aria-hidden="true">
-        <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <g opacity="0.45">
-            <path d="M14.4406 6.92621C15.0558 7.87107 15.4165 9.02017 15.4165 10.2595C15.4165 11.4989 15.0558 12.648 14.4406 13.5929M9.6878 4.73095L7.2256 7.36902C7.09108 7.51314 7.02382 7.58521 6.94533 7.63674C6.87574 7.68243 6.79987 7.7161 6.72051 7.73652C6.631 7.75954 6.53588 7.75954 6.34564 7.75954H4.99444C4.55885 7.75954 4.34105 7.75954 4.17467 7.85037C4.02833 7.93026 3.90934 8.05775 3.83477 8.21455C3.75 8.39281 3.75 8.62616 3.75 9.09288V11.4262C3.75 11.8929 3.75 12.1263 3.83477 12.3045C3.90934 12.4613 4.02833 12.5888 4.17467 12.6687C4.34105 12.7595 4.55885 12.7595 4.99444 12.7595H6.34564C6.53588 12.7595 6.631 12.7595 6.72051 12.7826C6.79987 12.803 6.87574 12.8367 6.94533 12.8823C7.02382 12.9339 7.09108 13.0059 7.2256 13.1501L9.68779 15.7881C10.021 16.1451 10.1876 16.3236 10.3306 16.3357C10.4547 16.3461 10.576 16.2923 10.6568 16.1909C10.75 16.074 10.75 15.8216 10.75 15.3167V5.20235C10.75 4.6975 10.75 4.44508 10.6568 4.32819C10.576 4.22677 10.4547 4.17295 10.3306 4.18342C10.1876 4.19548 10.021 4.37397 9.6878 4.73095Z" stroke="black" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
-          </g>
-        </svg>
-      </span>
-      <span class="icon mute" aria-hidden="true">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <g opacity="0.45">
-            <path d="M18.3333 7.50002L13.3333 12.5M13.3333 7.50002L18.3333 12.5M8.02859 4.47142L5.39051 7.1095C5.24639 7.25362 5.17432 7.32569 5.09023 7.37722C5.01567 7.42291 4.93438 7.45658 4.84935 7.477C4.75344 7.50002 4.65153 7.50002 4.44771 7.50002H2.99999C2.53328 7.50002 2.29992 7.50002 2.12166 7.59085C1.96486 7.67074 1.83738 7.79823 1.75748 7.95503C1.66666 8.13329 1.66666 8.36664 1.66666 8.83335V11.1667C1.66666 11.6334 1.66666 11.8668 1.75748 12.045C1.83738 12.2018 1.96486 12.3293 2.12166 12.4092C2.29992 12.5 2.53328 12.5 2.99999 12.5H4.44771C4.65153 12.5 4.75344 12.5 4.84935 12.523C4.93438 12.5435 5.01567 12.5771 5.09023 12.6228C5.17432 12.6744 5.24639 12.7464 5.39051 12.8905L8.02859 15.5286C8.38557 15.8856 8.56406 16.0641 8.7173 16.0761C8.85026 16.0866 8.9802 16.0328 9.06683 15.9314C9.16666 15.8145 9.16666 15.5621 9.16666 15.0572V4.94283C9.16666 4.43798 9.16666 4.18556 9.06683 4.06867C8.9802 3.96725 8.85026 3.91343 8.7173 3.92389C8.56406 3.93595 8.38557 4.11444 8.02859 4.47142Z" stroke="black" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
-          </g>
-        </svg>
-      </span>
-    </button>
+  <div class="main-container">
+    <header class="hero">
+      <h1 class="hero-title">Yolk of Truth</h1>
+      <p class="hero-sub">
+        <span>Tap an egg</span>
+        <span class="star" aria-hidden="true">
+          <img src="./assets/star-05.png" alt="Star" width="16" height="17" />
+        </span>
+        <span>Watch it break</span>
+        <span class="star" aria-hidden="true">
+          <img src="./assets/star-05.png" alt="Star" width="16" height="17" />
+        </span>
+        <span>Discover your fortune</span>
+      </p>
+      <p class="hero-sub-mobile">Discover your fortune</p>
+    </header>
+    <main class="board" aria-label="Egg selection grid">
+      <section class="egg-grid" role="list" id="eggGrid">
+        <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-01.png" alt="Egg 1" /></div>
+        <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-02.png" alt="Egg 2" /></div>
+        <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-03.png" alt="Egg 3" /></div>
+        <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-04.png" alt="Egg 4" /></div>
+        <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-05.png" alt="Egg 5" /></div>
+        <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-06.png" alt="Egg 6" /></div>
+        <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-07.png" alt="Egg 7" /></div>
+        <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-09.png" alt="Egg 9" /></div>
+        <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-10.png" alt="Egg 10" /></div>
+        <div class="egg-tile" role="listitem"><img class="egg-icon" src="./assets/eggs/eggs-01.png" alt="Egg 1" /></div>
+      </section>
+    </main>
+    <div class="cta">
+      <button id="musicToggle" class="music-btn" aria-pressed="false">
+        <span class="icon on" aria-hidden="true">
+          <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g opacity="0.45">
+              <path d="M14.4406 6.92621C15.0558 7.87107 15.4165 9.02017 15.4165 10.2595C15.4165 11.4989 15.0558 12.648 14.4406 13.5929M9.6878 4.73095L7.2256 7.36902C7.09108 7.51314 7.02382 7.58521 6.94533 7.63674C6.87574 7.68243 6.79987 7.7161 6.72051 7.73652C6.631 7.75954 6.53588 7.75954 6.34564 7.75954H4.99444C4.55885 7.75954 4.34105 7.75954 4.17467 7.85037C4.02833 7.93026 3.90934 8.05775 3.83477 8.21455C3.75 8.39281 3.75 8.62616 3.75 9.09288V11.4262C3.75 11.8929 3.75 12.1263 3.83477 12.3045C3.90934 12.4613 4.02833 12.5888 4.17467 12.6687C4.34105 12.7595 4.55885 12.7595 4.99444 12.7595H6.34564C6.53588 12.7595 6.631 12.7595 6.72051 12.7826C6.79987 12.803 6.87574 12.8367 6.94533 12.8823C7.02382 12.9339 7.09108 13.0059 7.2256 13.1501L9.68779 15.7881C10.021 16.1451 10.1876 16.3236 10.3306 16.3357C10.4547 16.3461 10.576 16.2923 10.6568 16.1909C10.75 16.074 10.75 15.8216 10.75 15.3167V5.20235C10.75 4.6975 10.75 4.44508 10.6568 4.32819C10.576 4.22677 10.4547 4.17295 10.3306 4.18342C10.1876 4.19548 10.021 4.37397 9.6878 4.73095Z" stroke="black" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+          </svg>
+        </span>
+        <span class="icon mute" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g opacity="0.45">
+              <path d="M18.3333 7.50002L13.3333 12.5M13.3333 7.50002L18.3333 12.5M8.02859 4.47142L5.39051 7.1095C5.24639 7.25362 5.17432 7.32569 5.09023 7.37722C5.01567 7.42291 4.93438 7.45658 4.84935 7.477C4.75344 7.50002 4.65153 7.50002 4.44771 7.50002H2.99999C2.53328 7.50002 2.29992 7.50002 2.12166 7.59085C1.96486 7.67074 1.83738 7.79823 1.75748 7.95503C1.66666 8.13329 1.66666 8.36664 1.66666 8.83335V11.1667C1.66666 11.6334 1.66666 11.8668 1.75748 12.045C1.83738 12.2018 1.96486 12.3293 2.12166 12.4092C2.29992 12.5 2.53328 12.5 2.99999 12.5H4.44771C4.65153 12.5 4.75344 12.5 4.84935 12.523C4.93438 12.5435 5.01567 12.5771 5.09023 12.6228C5.17432 12.6744 5.24639 12.7464 5.39051 12.8905L8.02859 15.5286C8.38557 15.8856 8.56406 16.0641 8.7173 16.0761C8.85026 16.0866 8.9802 16.0328 9.06683 15.9314C9.16666 15.8145 9.16666 15.5621 9.16666 15.0572V4.94283C9.16666 4.43798 9.16666 4.18556 9.06683 4.06867C8.9802 3.96725 8.85026 3.91343 8.7173 3.92389C8.56406 3.93595 8.38557 4.11444 8.02859 4.47142Z" stroke="black" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+          </svg>
+        </span>
+      </button>
+    </div>
   </div>
 
   <script>
@@ -104,12 +106,13 @@
       if (img) {
         // force hover-like scaled state so egg looks active
         img.style.setProperty('--hover-transform', 'scale(1.28) rotate(-10deg) rotateY(18deg)');
-        // Shake briefly (optional) - keep subtle or remove if not needed with ripple
+        // Add subtle movement animation during the effect
         img.classList.add('animating');
-        img.style.animation = 'none';
-        void img.offsetWidth;
-        img.style.animation = 'egg-shake-xy 300ms ease-out';
-        setTimeout(() => { img.classList.remove('animating'); img.style.animation = 'none'; }, 320);
+        img.style.animation = 'egg-click-movement 800ms ease-out';
+        setTimeout(() => { 
+          img.classList.remove('animating'); 
+          img.style.animation = 'none'; 
+        }, 850);
       }
 
       // Create ripple centered on the egg tile (sequence of ripples)
@@ -170,13 +173,29 @@
               // Wait for the longest ring animation (~1.4s from now) before enabling scroll and showing overlay
               setTimeout(() => {
                 document.body.classList.remove('no-scroll');
-                const overlay = document.getElementById('fortuneOverlay');
-                const fortuneText = document.getElementById('fortuneText');
-                if (!overlay || !fortuneText) return;
-                const msg = fortunes[Math.floor(Math.random() * fortunes.length)];
-                fortuneText.textContent = msg;
-                overlay.classList.remove('hidden', 'closing');
-                requestAnimationFrame(() => overlay.classList.add('showing'));
+                
+                // Create white radial overlay
+                const radialOverlay = document.createElement('div');
+                radialOverlay.className = 'radial-overlay';
+                radialOverlay.style.left = `${centerLeft - 300}px`;
+                radialOverlay.style.top = `${centerTop - 300}px`;
+                document.body.appendChild(radialOverlay);
+                
+                // Show fortune overlay after radial animation starts
+                setTimeout(() => {
+                  const overlay = document.getElementById('fortuneOverlay');
+                  const fortuneText = document.getElementById('fortuneText');
+                  if (!overlay || !fortuneText) return;
+                  const msg = fortunes[Math.floor(Math.random() * fortunes.length)];
+                  fortuneText.textContent = msg;
+                  overlay.classList.remove('hidden', 'closing');
+                  requestAnimationFrame(() => overlay.classList.add('showing'));
+                }, 200);
+                
+                // Remove radial overlay after animation
+                setTimeout(() => {
+                  radialOverlay.remove();
+                }, 2000);
               }, 1400);
             }
           }, { once: true });
