@@ -294,17 +294,27 @@
       
       function tryAgain() {
         hide();
-        // Trigger a new egg click after a short delay
-        setTimeout(() => {
-          const eggs = document.querySelectorAll('.egg-tile');
-          const randomEgg = eggs[Math.floor(Math.random() * eggs.length)];
-          randomEgg?.click();
-        }, 500);
       }
       
       shareBtn?.addEventListener('click', shareFortune);
       tryAgainBtn?.addEventListener('click', tryAgain);
-      overlay?.addEventListener('click', (e)=>{ if(e.target === overlay) hide(); });
+      overlay?.addEventListener('click', (e)=>{ 
+        // Close modal when clicking anywhere on the overlay (background)
+        if(e.target === overlay) hide(); 
+      });
+      
+      // Also close when clicking on the modal container (but not the card content)
+      const modal = overlay?.querySelector('.modal');
+      modal?.addEventListener('click', (e) => {
+        // Only close if clicking on the modal container itself, not the card
+        if(e.target === modal) hide();
+      });
+      
+      // Prevent card clicks from closing the modal
+      const fortuneCard = overlay?.querySelector('.fortune-card');
+      fortuneCard?.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
     })();
   </script>
 
