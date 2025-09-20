@@ -537,17 +537,21 @@
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
 
-      // Calculate rotation and 3D movement
-      const rotateX = ((y - centerY) / centerY) * 8;
-      const rotateY = ((x - centerX) / centerX) * -8;
-      const translateX = ((x - centerX) / centerX) * 30; // increased horizontal 3D movement
-      const translateY = ((y - centerY) / centerY) * 30; // increased vertical 3D movement
-      const translateZ = 50; // increased forward movement in 3D space
+      // Smaller, subtle values
+      const rotateX = ((y - centerY) / centerY) * 6;   // max ~6deg
+      const rotateY = ((x - centerX) / centerX) * -6;  // max ~6deg
+      const translateX = ((x - centerX) / centerX) * 12; // max ~12px
+      const translateY = ((y - centerY) / centerY) * 12; // max ~12px
+      const translateZ = 20; // slight forward pop
 
-      card.style.transform = `translateX(${translateX}px) translateY(${translateY}px) translateZ(${translateZ}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.1)`;
-      
-      // Debug log to see if transforms are being applied
-      console.log('3D Transform:', `translateX(${translateX}px) translateY(${translateY}px) translateZ(${translateZ}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`);
+      card.style.transform = `
+        translateX(${translateX}px) 
+        translateY(${translateY}px) 
+        translateZ(${translateZ}px) 
+        rotateX(${rotateX}deg) 
+        rotateY(${rotateY}deg) 
+        scale(1.05)
+      `;
       card.style.setProperty('--x', `${(x / rect.width) * 100}%`);
       card.style.setProperty('--y', `${(y / rect.height) * 100}%`);
 
@@ -555,9 +559,9 @@
     });
 
     card.addEventListener('mouseleave', () => {
-      card.style.transform = 'translateX(0px) translateY(0px) translateZ(0px) rotateX(0deg) rotateY(0deg) scale(1)';
+      // Smooth reset
+      card.style.transform = 'translateX(0) translateY(0) translateZ(0) rotateX(0) rotateY(0) scale(1)';
       card.classList.remove('hovering');
-      console.log('3D Transform Reset');
     });
   })();
   </script>
