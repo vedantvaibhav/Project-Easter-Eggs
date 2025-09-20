@@ -220,7 +220,7 @@ body {
   overflow: hidden;
   width: 100%;
   max-width: 400px;
-  border: 1px solid rgba(255,255,255,0.8);
+  border: 3px solid #ff0000; /* DEBUG: bright red border */
   position: relative;
   z-index: 202; /* card above everything */
   opacity: 1 !important;
@@ -230,6 +230,17 @@ body {
   height: 200px;
   position: relative;
   overflow: hidden;
+}
+
+.dummy-egg-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: auto;
+  z-index: 10;
+  opacity: 0.9;
 }
 
 .fortune-gradient {
