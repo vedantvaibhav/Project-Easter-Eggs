@@ -250,7 +250,7 @@ body {
   position: relative;
   z-index: 202; /* card above everything */
   opacity: 1 !important;
-  animation: card-3d-spin-in 2s ease forwards;
+  animation: card-3d-spin-in 3s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   transform-style: preserve-3d;
   perspective: 1000px;
