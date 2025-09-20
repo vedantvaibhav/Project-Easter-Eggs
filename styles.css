@@ -360,7 +360,7 @@ body {
 
 @keyframes card-3d-spin-in {
   0% { 
-    transform: rotateY(0deg) scale(0.8); 
+    transform: rotateY(0deg) scale(0); 
     opacity: 0; 
   }
   100% { 
