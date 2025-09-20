@@ -188,6 +188,10 @@
           const msg = fortunes[Math.floor(Math.random() * fortunes.length)];
           fortuneText.textContent = msg;
           
+          // Position overlay to originate from clicked egg
+          overlay.style.setProperty('--egg-x', `${centerLeft}px`);
+          overlay.style.setProperty('--egg-y', `${centerTop}px`);
+          
           // Show overlay properly
           overlay.classList.remove('hidden', 'closing');
           overlay.classList.add('showing');
