@@ -370,9 +370,9 @@ body {
   font-weight: 500;
   line-height: normal;
   border: none;
-  background: transparent;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.80);
   transition: all 0.2s ease;
 }
 
