@@ -251,6 +251,25 @@ body {
   z-index: 202; /* card above everything */
   opacity: 1 !important;
   animation: card-3d-spin-in 2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.fortune-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255, 200, 150, 0.4), transparent 70%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.fortune-card.hovering::before {
+  opacity: 1;
 }
 
 .fortune-image {

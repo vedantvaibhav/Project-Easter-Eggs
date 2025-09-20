@@ -524,6 +524,35 @@
     if (isMobile()) initInfiniteCarousel();
     window.addEventListener('resize', () => { if (isMobile()) initInfiniteCarousel(); });
   })();
+
+  // Fortune card hover effect
+  (function() {
+    const card = document.querySelector('.fortune-card');
+    if (!card) return;
+
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      // Calculate rotation
+      const rotateX = ((y - centerY) / centerY) * 8; // tilt limit
+      const rotateY = ((x - centerX) / centerX) * -8;
+
+      card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+      card.style.setProperty('--x', `${(x / rect.width) * 100}%`);
+      card.style.setProperty('--y', `${(y / rect.height) * 100}%`);
+
+      card.classList.add('hovering');
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+      card.classList.remove('hovering');
+    });
+  })();
   </script>
 </body>
 </html>
