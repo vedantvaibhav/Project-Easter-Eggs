@@ -262,14 +262,32 @@ body {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255, 200, 150, 0.4), transparent 70%);
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.8) 0%, 
+    rgba(255, 255, 255, 0.4) 30%, 
+    transparent 50%, 
+    rgba(255, 255, 255, 0.2) 70%, 
+    rgba(255, 255, 255, 0.6) 100%);
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.3s;
+  transform: translateX(-100%);
+  animation: shine-sweep 2s ease-in-out infinite;
 }
 
 .fortune-card.hovering::before {
   opacity: 1;
+  animation-play-state: running;
+}
+
+.fortune-card:not(.hovering)::before {
+  animation-play-state: paused;
+}
+
+@keyframes shine-sweep {
+  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+  50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+  100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
 }
 
 .fortune-image {
