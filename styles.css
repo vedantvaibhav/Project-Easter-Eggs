@@ -209,7 +209,7 @@ body {
   position: fixed; 
   inset: 0; 
   border: 1px solid #000;
-  background: radial-gradient(56.1% 90.49% at 50% 50%, #FFF 0%, rgba(255, 255, 255, 0.00) 100%);
+  background: radial-gradient(56.1% 90.49% at 50% 50%, rgba(255, 255, 255, 0.20) 0%, rgba(255, 255, 255, 0.00) 100%);
   display: grid; 
   place-items: center; 
   z-index: 200; 
@@ -239,7 +239,7 @@ body {
   position: relative;
   z-index: 202; /* card above everything */
   opacity: 1 !important;
-  animation: card-3d-spin-in 2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation: card-3d-spin-in 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
 .fortune-image {
@@ -332,6 +332,18 @@ body {
   0% { 
     transform: rotateY(0deg) scale(0.8); 
     opacity: 0; 
+  }
+  25% { 
+    transform: rotateY(90deg) scale(0.9); 
+    opacity: 0.3; 
+  }
+  50% { 
+    transform: rotateY(180deg) scale(0.95); 
+    opacity: 0.6; 
+  }
+  75% { 
+    transform: rotateY(270deg) scale(0.98); 
+    opacity: 0.8; 
   }
   100% { 
     transform: rotateY(360deg) scale(1); 
