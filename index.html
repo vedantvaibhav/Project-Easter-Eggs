@@ -187,10 +187,15 @@
           
           const msg = fortunes[Math.floor(Math.random() * fortunes.length)];
           fortuneText.textContent = msg;
+          
+          // DEBUG: Force overlay to be visible
+          overlay.style.display = 'grid';
+          overlay.style.opacity = '1';
+          overlay.style.pointerEvents = 'auto';
           overlay.classList.remove('hidden', 'closing');
-          requestAnimationFrame(() => {
-            overlay.classList.add('showing');
-          });
+          overlay.classList.add('showing');
+          
+          console.log('Overlay should be visible now', overlay);
         }, 200);
         
         // Remove radial overlay after animation
