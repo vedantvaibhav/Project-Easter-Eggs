@@ -257,12 +257,19 @@
       }
       
       function hide(){
-        if (!overlay) return;
+        console.log('Hide function called');
+        if (!overlay) {
+          console.log('No overlay found');
+          return;
+        }
+        
         const modal = overlay.querySelector('.modal');
         // Reset modal transform for next time
-        modal.style.transform = '';
-        modal.style.transition = '';
-        modal.style.opacity = '';
+        if (modal) {
+          modal.style.transform = '';
+          modal.style.transition = '';
+          modal.style.opacity = '';
+        }
         
         overlay.classList.remove('showing');
         overlay.classList.add('closing');
@@ -271,8 +278,17 @@
           overlay.classList.remove('closing');
           // After closing, reset all eggs to default state
           resetAllEggs();
+          console.log('Modal closed');
         }, 320);
       }
+      
+      // Add keyboard escape handler
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlay && !overlay.classList.contains('hidden')) {
+          console.log('Escape key pressed');
+          hide();
+        }
+      });
       
       function shareFortune() {
         const fortuneText = document.getElementById('fortuneText');
@@ -293,26 +309,28 @@
       }
       
       function tryAgain() {
+        console.log('Try Again clicked');
+        hide();
+      }
+      
+      function closeModal() {
+        console.log('Closing modal');
         hide();
       }
       
       shareBtn?.addEventListener('click', shareFortune);
       tryAgainBtn?.addEventListener('click', tryAgain);
-      overlay?.addEventListener('click', (e)=>{ 
-        // Close modal when clicking anywhere on the overlay (background)
-        if(e.target === overlay) hide(); 
-      });
       
-      // Also close when clicking on the modal container (but not the card content)
-      const modal = overlay?.querySelector('.modal');
-      modal?.addEventListener('click', (e) => {
-        // Only close if clicking on the modal container itself, not the card
-        if(e.target === modal) hide();
+      // Close modal when clicking anywhere on the overlay
+      overlay?.addEventListener('click', (e)=>{ 
+        console.log('Overlay clicked', e.target);
+        closeModal();
       });
       
       // Prevent card clicks from closing the modal
       const fortuneCard = overlay?.querySelector('.fortune-card');
       fortuneCard?.addEventListener('click', (e) => {
+        console.log('Card clicked - preventing close');
         e.stopPropagation();
       });
     })();
