@@ -188,10 +188,7 @@
           const msg = fortunes[Math.floor(Math.random() * fortunes.length)];
           fortuneText.textContent = msg;
           
-          // DEBUG: Force overlay to be visible
-          overlay.style.display = 'grid';
-          overlay.style.opacity = '1';
-          overlay.style.pointerEvents = 'auto';
+          // Show overlay properly
           overlay.classList.remove('hidden', 'closing');
           overlay.classList.add('showing');
           
@@ -262,6 +259,11 @@
           console.log('No overlay found');
           return;
         }
+        
+        // Clear any inline styles that might prevent hiding
+        overlay.style.display = '';
+        overlay.style.opacity = '';
+        overlay.style.pointerEvents = '';
         
         const modal = overlay.querySelector('.modal');
         // Reset modal transform for next time
