@@ -438,12 +438,10 @@ body {
 }
 
 #tryAgain {
-  background: rgba(255, 255, 255, 0.80);
   background-clip: text;
   -webkit-background-clip: text;
   background-image: linear-gradient(135deg, hsla(356, 92%, 59%, 1), hsla(26, 100%, 60%, 1));
   color: transparent;
-  border: none;
 }
 
 #tryAgain:hover {
