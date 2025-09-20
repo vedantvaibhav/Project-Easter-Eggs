@@ -537,21 +537,11 @@
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
 
-      // Smaller, subtle values
-      const rotateX = ((y - centerY) / centerY) * 6;   // max ~6deg
-      const rotateY = ((x - centerX) / centerX) * -6;  // max ~6deg
-      const translateX = ((x - centerX) / centerX) * 12; // max ~12px
-      const translateY = ((y - centerY) / centerY) * 12; // max ~12px
-      const translateZ = 20; // slight forward pop
+      // Calculate rotation (max 8° tilt)
+      const rotateX = ((y - centerY) / centerY) * 8;
+      const rotateY = ((x - centerX) / centerX) * -8;
 
-      card.style.transform = `
-        translateX(${translateX}px) 
-        translateY(${translateY}px) 
-        translateZ(${translateZ}px) 
-        rotateX(${rotateX}deg) 
-        rotateY(${rotateY}deg) 
-        scale(1.05)
-      `;
+      card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
       card.style.setProperty('--x', `${(x / rect.width) * 100}%`);
       card.style.setProperty('--y', `${(y / rect.height) * 100}%`);
 
@@ -559,8 +549,7 @@
     });
 
     card.addEventListener('mouseleave', () => {
-      // Smooth reset
-      card.style.transform = 'translateX(0) translateY(0) translateZ(0) rotateX(0) rotateY(0) scale(1)';
+      card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
       card.classList.remove('hovering');
     });
   })();
