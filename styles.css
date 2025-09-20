@@ -32,11 +32,30 @@ body {
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  display: inline-flex;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: 8px;
 }
 .hero-sub .star { display: inline-flex; }
+.hero-sub .star img { 
+  width: 16px !important; 
+  height: 17px !important; 
+  display: block !important; 
+  filter: drop-shadow(0 0 2px rgba(0,0,0,0.15)); 
+  opacity: 1 !important;
+  visibility: visible !important;
+  position: relative !important;
+  z-index: 10 !important;
+  background: red !important; /* DEBUG: red background */
+  border: 2px solid yellow !important; /* DEBUG: yellow border */
+}
+.hero-sub .star { 
+  display: inline-flex !important; 
+  align-items: center; 
+  justify-content: center;
+}
 
 .board { padding: 24px 16px 48px; margin-top: 48px; }
 .egg-grid {
@@ -249,17 +268,12 @@ body {
     font-weight: 400;
     line-height: normal;
   }
-  .hero-sub { display: none; }
-  .hero-sub-mobile {
-    display: block !important;
-    color: #FFF;
-    text-align: center;
-    font-family: Baskervville, serif;
+  .hero-sub { 
+    display: flex !important; 
     font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    margin-top: 6px;
+  }
+  .hero-sub-mobile {
+    display: none !important;
   }
   /* Visual cue for focused egg on mobile */
   .egg-tile.is-focused .egg-icon {
