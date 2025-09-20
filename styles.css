@@ -349,21 +349,36 @@ body {
   line-height: var(--Line-height-text-md, 24px); /* 150% */
 }
 
-.close-btn { 
-  padding: 10px 20px; 
-  border: none; 
-  border-radius: 25px; 
-  cursor: pointer; 
-  background: #111; 
-  color: #fff; 
+.card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.action-btn {
+  display: flex;
+  height: 44px;
+  padding: 16px 32px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex: 1 0 0;
+  color: var(--text-tertiary, #71717A);
+  font-family: "General Sans", system-ui, -apple-system, sans-serif;
   font-size: 14px;
+  font-style: normal;
   font-weight: 500;
+  line-height: normal;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 8px;
   transition: all 0.2s ease;
 }
 
-.close-btn:hover {
-  background: #333;
-  transform: translateY(-1px);
+.action-btn:hover {
+  background: rgba(113, 113, 122, 0.1);
+  color: var(--text-secondary, #52525B);
 }
 
 @keyframes crack-shake {

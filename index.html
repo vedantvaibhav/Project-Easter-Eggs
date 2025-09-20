@@ -225,8 +225,11 @@
         </div>
         <div class="fortune-message">
           <p id="fortuneText">Your fortune awaits! This is a test message to see if the card is visible.</p>
-          <button id="closeFortune" class="close-btn" aria-label="Close">OK</button>
         </div>
+      </div>
+      <div class="card-actions">
+        <button id="shareFortune" class="action-btn">Share</button>
+        <button id="tryAgain" class="action-btn">Try Again</button>
       </div>
     </div>
   </div>
@@ -234,7 +237,9 @@
   <script>
     (function(){
       const overlay = document.getElementById('fortuneOverlay');
-      const closeBtn = document.getElementById('closeFortune');
+      const shareBtn = document.getElementById('shareFortune');
+      const tryAgainBtn = document.getElementById('tryAgain');
+      
       function resetAllEggs() {
         document.querySelectorAll('.egg-icon').forEach((el) => {
           // Clear animations
@@ -250,6 +255,7 @@
           el.classList.remove('animating');
         });
       }
+      
       function hide(){
         if (!overlay) return;
         const modal = overlay.querySelector('.modal');
@@ -267,7 +273,37 @@
           resetAllEggs();
         }, 320);
       }
-      closeBtn?.addEventListener('click', hide);
+      
+      function shareFortune() {
+        const fortuneText = document.getElementById('fortuneText');
+        const text = fortuneText?.textContent || '';
+        
+        if (navigator.share) {
+          navigator.share({
+            title: 'My Fortune',
+            text: text,
+            url: window.location.href
+          });
+        } else {
+          // Fallback: copy to clipboard
+          navigator.clipboard.writeText(text).then(() => {
+            alert('Fortune copied to clipboard!');
+          });
+        }
+      }
+      
+      function tryAgain() {
+        hide();
+        // Trigger a new egg click after a short delay
+        setTimeout(() => {
+          const eggs = document.querySelectorAll('.egg-tile');
+          const randomEgg = eggs[Math.floor(Math.random() * eggs.length)];
+          randomEgg?.click();
+        }, 500);
+      }
+      
+      shareBtn?.addEventListener('click', shareFortune);
+      tryAgainBtn?.addEventListener('click', tryAgain);
       overlay?.addEventListener('click', (e)=>{ if(e.target === overlay) hide(); });
     })();
   </script>
