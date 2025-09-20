@@ -123,34 +123,34 @@
       // Disable scroll during VFX sequence
       document.body.classList.add('no-scroll');
 
-      // Add shake animation to the egg
-      img.style.animation = 'egg-shake-xy 600ms ease-out';
+      // Add shake animation to the egg (more pronounced)
+      img.style.animation = 'egg-shake-xy 800ms ease-out';
       setTimeout(() => {
         img.style.animation = 'none';
-      }, 650);
+      }, 850);
 
       // Start directly with expanding circle rings + star particles
-      // Rings
-      for (let i = 0; i < 3; i++) {
+      // More Rings (increased from 3 to 5)
+      for (let i = 0; i < 5; i++) {
         const circle = document.createElement('div');
         circle.className = 'circle';
-        const ringSize = 100 + i * 20;
+        const ringSize = 80 + i * 25;
         circle.style.left = `${centerLeft - ringSize / 2}px`;
         circle.style.top = `${centerTop - ringSize / 2}px`;
         circle.style.width = circle.style.height = `${ringSize}px`;
-        circle.style.animationDuration = `${1 + i * 0.2}s`;
+        circle.style.animationDuration = `${0.8 + i * 0.15}s`;
         document.body.appendChild(circle);
         circle.addEventListener('animationend', () => circle.remove(), { once: true });
       }
       
-      // Stars
-      for (let i = 0; i < 15; i++) {
+      // More Stars (increased from 15 to 25)
+      for (let i = 0; i < 25; i++) {
         const star = document.createElement('div');
         star.className = 'star';
         star.style.left = `${centerLeft}px`;
         star.style.top = `${centerTop}px`;
         const angle = Math.random() * 2 * Math.PI;
-        const distance = 100 + Math.random() * 50;
+        const distance = 80 + Math.random() * 80;
         const dx = Math.cos(angle) * distance + 'px';
         const dy = Math.sin(angle) * distance + 'px';
         star.style.setProperty('--dx', dx);
@@ -172,6 +172,15 @@
         
         // Show fortune overlay after radial animation starts
         setTimeout(() => {
+          // Stop all animations when message appears
+          document.querySelectorAll('.circle, .star').forEach(el => {
+            el.style.animation = 'none';
+            el.remove();
+          });
+          
+          // Stop egg shake animation
+          img.style.animation = 'none';
+          
           const overlay = document.getElementById('fortuneOverlay');
           const fortuneText = document.getElementById('fortuneText');
           if (!overlay || !fortuneText) return;
