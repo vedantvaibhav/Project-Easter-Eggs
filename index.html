@@ -115,96 +115,77 @@
         }, 850);
       }
 
-      // Create ripple centered on the egg tile (sequence of ripples)
+      // Create animation centered on the egg tile
       const rect = tile.getBoundingClientRect();
-      const base = 200; // base size to center offset
       const centerLeft = rect.left + rect.width / 2;
       const centerTop = rect.top + rect.height / 2;
 
       // Disable scroll during VFX sequence
       document.body.classList.add('no-scroll');
 
-      // Spawn 3 ripple rings (existing)
-      const rippleCount = 3;
-      const rippleDelayMs = 180; // stagger each ripple
-      let remaining = rippleCount;
+      // Add shake animation to the egg
+      img.style.animation = 'egg-shake-xy 600ms ease-out';
+      setTimeout(() => {
+        img.style.animation = 'none';
+      }, 650);
 
-      function spawnRipple(delayMs){
+      // Start directly with expanding circle rings + star particles
+      // Rings
+      for (let i = 0; i < 3; i++) {
+        const circle = document.createElement('div');
+        circle.className = 'circle';
+        const ringSize = 100 + i * 20;
+        circle.style.left = `${centerLeft - ringSize / 2}px`;
+        circle.style.top = `${centerTop - ringSize / 2}px`;
+        circle.style.width = circle.style.height = `${ringSize}px`;
+        circle.style.animationDuration = `${1 + i * 0.2}s`;
+        document.body.appendChild(circle);
+        circle.addEventListener('animationend', () => circle.remove(), { once: true });
+      }
+      
+      // Stars
+      for (let i = 0; i < 15; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = `${centerLeft}px`;
+        star.style.top = `${centerTop}px`;
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = 100 + Math.random() * 50;
+        const dx = Math.cos(angle) * distance + 'px';
+        const dy = Math.sin(angle) * distance + 'px';
+        star.style.setProperty('--dx', dx);
+        star.style.setProperty('--dy', dy);
+        document.body.appendChild(star);
+        star.addEventListener('animationend', () => star.remove(), { once: true });
+      }
+
+      // Wait for the longest ring animation (~1.4s from now) before enabling scroll and showing overlay
+      setTimeout(() => {
+        document.body.classList.remove('no-scroll');
+        
+        // Create white radial overlay
+        const radialOverlay = document.createElement('div');
+        radialOverlay.className = 'radial-overlay';
+        radialOverlay.style.left = `${centerLeft - 300}px`;
+        radialOverlay.style.top = `${centerTop - 300}px`;
+        document.body.appendChild(radialOverlay);
+        
+        // Show fortune overlay after radial animation starts
         setTimeout(() => {
-          const ripple = document.createElement('div');
-          ripple.className = 'ripple';
-          ripple.style.width = ripple.style.height = `${base}px`;
-          ripple.style.left = `${centerLeft - base / 2}px`;
-          ripple.style.top = `${centerTop - base / 2}px`;
-          document.body.appendChild(ripple);
-          ripple.addEventListener('animationend', () => {
-            ripple.remove();
-            remaining -= 1;
-            if (remaining === 0) {
-              // After ripples, spawn expanding circle rings + star particles
-              // Rings
-              for (let i = 0; i < 3; i++) {
-                const circle = document.createElement('div');
-                circle.className = 'circle';
-                const ringSize = 100 + i * 20;
-                circle.style.left = `${centerLeft - ringSize / 2}px`;
-                circle.style.top = `${centerTop - ringSize / 2}px`;
-                circle.style.width = circle.style.height = `${ringSize}px`;
-                circle.style.animationDuration = `${1 + i * 0.2}s`;
-                document.body.appendChild(circle);
-                circle.addEventListener('animationend', () => circle.remove(), { once: true });
-              }
-              // Stars
-              for (let i = 0; i < 15; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = `${centerLeft}px`;
-                star.style.top = `${centerTop}px`;
-                const angle = Math.random() * 2 * Math.PI;
-                const distance = 100 + Math.random() * 50;
-                const dx = Math.cos(angle) * distance + 'px';
-                const dy = Math.sin(angle) * distance + 'px';
-                star.style.setProperty('--dx', dx);
-                star.style.setProperty('--dy', dy);
-                document.body.appendChild(star);
-                star.addEventListener('animationend', () => star.remove(), { once: true });
-              }
-
-              // Wait for the longest ring animation (~1.4s from now) before enabling scroll and showing overlay
-              setTimeout(() => {
-                document.body.classList.remove('no-scroll');
-                
-                // Create white radial overlay
-                const radialOverlay = document.createElement('div');
-                radialOverlay.className = 'radial-overlay';
-                radialOverlay.style.left = `${centerLeft - 300}px`;
-                radialOverlay.style.top = `${centerTop - 300}px`;
-                document.body.appendChild(radialOverlay);
-                
-                // Show fortune overlay after radial animation starts
-                setTimeout(() => {
-                  const overlay = document.getElementById('fortuneOverlay');
-                  const fortuneText = document.getElementById('fortuneText');
-                  if (!overlay || !fortuneText) return;
-                  const msg = fortunes[Math.floor(Math.random() * fortunes.length)];
-                  fortuneText.textContent = msg;
-                  overlay.classList.remove('hidden', 'closing');
-                  requestAnimationFrame(() => overlay.classList.add('showing'));
-                }, 200);
-                
-                // Remove radial overlay after animation
-                setTimeout(() => {
-                  radialOverlay.remove();
-                }, 2000);
-              }, 1400);
-            }
-          }, { once: true });
-        }, delayMs);
-      }
-
-      for (let i = 0; i < rippleCount; i++) {
-        spawnRipple(i * rippleDelayMs);
-      }
+          const overlay = document.getElementById('fortuneOverlay');
+          const fortuneText = document.getElementById('fortuneText');
+          if (!overlay || !fortuneText) return;
+          const msg = fortunes[Math.floor(Math.random() * fortunes.length)];
+          fortuneText.textContent = msg;
+          overlay.classList.remove('hidden', 'closing');
+          requestAnimationFrame(() => overlay.classList.add('showing'));
+        }, 200);
+        
+        // Remove radial overlay after animation
+        setTimeout(() => {
+          radialOverlay.remove();
+        }, 2000);
+      }, 1400);
     });
   })();
   </script>

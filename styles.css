@@ -76,7 +76,7 @@ body {
   justify-items: center;
 }
 .egg-tile {
-  min-height: clamp(150px, 24vw, 220px);
+  min-height: clamp(165px, 26.4vw, 242px);
   width: 100%;
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.501);
@@ -97,7 +97,7 @@ body {
   --click-tilt-y: 0px;
   --click-tilt-rot: 0deg;
   --swipe-rot: 0deg;
-  width: calc(min(140px, 60%) - 15px);
+  width: calc(min(154px, 66%) - 15px);
   height: auto;
   display: block;
   transition: transform .35s ease; /* For smooth transition into/out of hover state */
@@ -163,6 +163,15 @@ body {
     --click-tilt-y: 0px; 
     --click-tilt-rot: 0deg; 
   }
+}
+
+@keyframes egg-shake-xy {
+  0% { --shake-x: 0px; --shake-y: 0px; }
+  20% { --shake-x: -4px; --shake-y: 2px; }
+  40% { --shake-x: 4px; --shake-y: -2px; }
+  60% { --shake-x: -3px; --shake-y: 2px; }
+  80% { --shake-x: 3px; --shake-y: -2px; }
+  100% { --shake-x: 0px; --shake-y: 0px; }
 }
 
 @keyframes egg-click-tilt {
@@ -378,7 +387,7 @@ body {
     padding: 150px 16px;
   }
   .egg-icon {
-    width: calc(min(180px, 70%) - 15px);
+    width: calc(min(198px, 77%) - 15px);
     height: auto;
     object-fit: contain;
   }
