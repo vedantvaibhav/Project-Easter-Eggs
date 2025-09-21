@@ -14,7 +14,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-top: 100px;
 }
 
 .main-container {
@@ -250,7 +251,7 @@ body {
   position: relative;
   z-index: 202; /* card above everything */
   opacity: 1 !important;
-  animation: card-3d-spin-in 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation: card-3d-spin-in 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   transform-style: preserve-3d;
   perspective: 1000px;
@@ -283,18 +284,24 @@ body {
   background: #FFF;
   position: relative;
   overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .dummy-egg-image {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80px;
-  height: auto;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   z-index: 10;
-  opacity: 0.9;
+  opacity: 0.95;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
 
 .fortune-gradient {
   position: absolute;
@@ -465,7 +472,10 @@ body {
 }
 
 #tryAgain:hover::before {
-  background: linear-gradient(135deg, hsla(356, 92%, 55%, 1), hsla(26, 100%, 60%, 1));
+  background: var(--text-secondary, #52525B);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 @keyframes crack-shake {
@@ -549,18 +559,6 @@ body {
 @media (max-width: 900px) { .egg-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 640px) { .egg-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; } }
 
-.cta { display: grid; place-items: center; padding: 24px 0 60px; }
-.music-btn { display: flex; height: 44px; padding: 4px 12px; align-items: center; gap: 3px; flex-shrink: 0; border-radius: 999px; background: rgba(255, 255, 255, 0.48); border: none; cursor: pointer; box-shadow: none; transition: background-color .15s ease, transform .12s ease; }
-.music-btn:hover { background: rgba(255, 255, 255, 0.8); }
-.music-btn:active { transform: translateY(1px); }
-.music-btn .icon { display: none; }
-.music-btn .on { display: none; }
-.music-btn .mute { display: none; }
-.music-btn[aria-pressed="true"] .on { display: inline-flex; }
-.music-btn[aria-pressed="true"] .mute { display: none; }
-.music-btn[aria-pressed="false"] .on { display: none; }
-.music-btn[aria-pressed="false"] .mute { display: inline-flex; }
-/* label removed */
 
 /* Expanding circle rings (wave) */
 .circle {

@@ -6,52 +6,26 @@
   const shareBtn = document.getElementById('shareBtn');
   const ribbon = document.getElementById('fortuneRibbon');
   const burstLayer = document.getElementById('burstLayer');
-  const soundToggle = document.getElementById('soundToggle');
 
-  // Fortune messages (24)
-  const FORTUNES = [
-    'A fresh start will put you on your way.',
-    'Adventure can be real happiness.',
-    'All the effort you are making will ultimately pay off.',
-    'Believe it can be done.',
-    'Bide your time; for success is near.',
-    'Do not fear what you don’t know.',
-    'Every flower blooms in its own sweet time.',
-    'Fortune favors the bold.',
-    'Happiness begins with facing life with a smile.',
-    'Now is the time to try something new.',
-    'Serendipity will lead you to pleasant surprises.',
-    'Simplicity and clarity should be your theme in dress.',
-    'Soon life will become more interesting.',
-    'Success is a journey, not a destination.',
-    'The early bird gets the worm, but the second mouse gets the cheese.',
-    'Your abilities are unparalleled.',
-    'You will conquer obstacles to achieve success.',
-    'You will find great contentment in the daily, simple things.',
-    'Take the chance while you still have the choice.',
-    'A golden opportunity is coming your way.',
-    'Your kindness is about to be repaid. 💖',
-    'A pleasant surprise awaits you this week.',
-    'Expect to be dazzled by a happy coincidence.',
-    'Watch for doors opening where there were none.'
-  ];
+  // Use fortune data from fortune-data.js
+  const FORTUNES = FORTUNE_DATA;
 
   const GOLDEN_FORTUNE = 'You cracked the rare Golden Fortune! Abundance and joy follow you. ✨🥇';
 
-  // 12 gradient styles for eggs
-  const EGG_GRADIENTS = [
-    'linear-gradient(135deg,#ff9a9e,#fecfef)',
-    'linear-gradient(135deg,#a1c4fd,#c2e9fb)',
-    'linear-gradient(135deg,#f6d365,#fda085)',
-    'linear-gradient(135deg,#84fab0,#8fd3f4)',
-    'linear-gradient(135deg,#fccb90,#d57eeb)',
-    'linear-gradient(135deg,#e0c3fc,#8ec5fc)',
-    'linear-gradient(135deg,#f093fb,#f5576c)',
-    'linear-gradient(135deg,#5ee7df,#b490ca)',
-    'linear-gradient(135deg,#c3cfe2,#cfd9df)',
-    'linear-gradient(135deg,#fddb92,#d1fdff)',
-    'linear-gradient(135deg,#d4fc79,#96e6a1)',
-    'linear-gradient(135deg,#a8edea,#fed6e3)'
+  // 12 egg PNG images
+  const EGG_IMAGES = [
+    './assets/eggs/eggs-01.png',
+    './assets/eggs/eggs-02.png',
+    './assets/eggs/eggs-03.png',
+    './assets/eggs/eggs-04.png',
+    './assets/eggs/eggs-05.png',
+    './assets/eggs/eggs-06.png',
+    './assets/eggs/eggs-07.png',
+    './assets/eggs/eggs-08.png',
+    './assets/eggs/eggs-09.png',
+    './assets/eggs/eggs-10.png',
+    './assets/eggs/eggs-11.png',
+    './assets/eggs/eggs-12.png'
   ];
 
   // State
@@ -70,25 +44,18 @@
     return copy;
   }
 
-  function createEggElement(index, isGolden, gradient) {
+  function createEggElement(index, isGolden, imageSrc) {
     const tile = document.createElement('div');
-    tile.className = 'tile';
+    tile.className = 'egg-tile';
 
-    const egg = document.createElement('div');
-    egg.className = 'egg' + (isGolden ? ' golden' : '');
+    const egg = document.createElement('img');
+    egg.className = 'egg-icon' + (isGolden ? ' golden' : '');
     egg.setAttribute('role', 'listitem');
     egg.setAttribute('tabindex', '0');
     egg.setAttribute('aria-label', isGolden ? 'Golden egg' : `Egg ${index + 1}`);
-    egg.style.setProperty('--egg-gradient', gradient);
+    egg.src = imageSrc;
+    egg.alt = isGolden ? 'Golden egg' : `Egg ${index + 1}`;
 
-    const inner = document.createElement('div');
-    inner.className = 'egg-inner';
-    const top = document.createElement('div');
-    top.className = 'egg-top';
-    const bottom = document.createElement('div');
-    bottom.className = 'egg-bottom';
-    inner.appendChild(top); inner.appendChild(bottom);
-    egg.appendChild(inner);
     tile.appendChild(egg);
 
     egg.addEventListener('click', () => openEgg(index));
@@ -104,7 +71,7 @@
   function buildGrid() {
     grid.innerHTML = '';
     eggs = [];
-    const gradients = shuffle(EGG_GRADIENTS);
+    const shuffledImages = shuffle([...EGG_IMAGES]);
 
     // 1 in 12 chance to place golden, else none
     goldenIndex = Math.random() < 0.2 ? Math.floor(Math.random() * 12) : -1;
@@ -113,8 +80,8 @@
     const order = shuffle([...Array(12).keys()]);
     for (let j = 0; j < 12; j++) {
       const i = order[j];
-      const gradient = gradients[j % gradients.length];
-      const el = createEggElement(i, i === goldenIndex, gradient);
+      const imageSrc = shuffledImages[j];
+      const el = createEggElement(i, i === goldenIndex, imageSrc);
       grid.appendChild(el.__tile || el);
       eggs.push(el);
     }
@@ -152,7 +119,8 @@
   }
 
   function getRandomFortune() {
-    return FORTUNES[Math.floor(Math.random() * FORTUNES.length)];
+    const randomFortune = FORTUNES[Math.floor(Math.random() * FORTUNES.length)];
+    return randomFortune.quote;
   }
 
   function showFortune(text, isGolden) {
@@ -197,15 +165,15 @@
   }
 
   // Simple synthesized crack sound
-  let audioCtx = null;
+  let crackAudioCtx = null;
   function playCrack() {
     try {
-      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
-      const o1 = audioCtx.createOscillator();
-      const g = audioCtx.createGain();
-      o1.connect(g); g.connect(audioCtx.destination);
+      crackAudioCtx = crackAudioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      const o1 = crackAudioCtx.createOscillator();
+      const g = crackAudioCtx.createGain();
+      o1.connect(g); g.connect(crackAudioCtx.destination);
       o1.type = 'triangle';
-      const now = audioCtx.currentTime;
+      const now = crackAudioCtx.currentTime;
       o1.frequency.setValueAtTime(800, now);
       o1.frequency.exponentialRampToValueAtTime(120, now + 0.12);
       g.gain.setValueAtTime(0.0001, now);
@@ -281,10 +249,6 @@
   // Events
   againBtn.addEventListener('click', resetGame);
   shareBtn.addEventListener('click', shareFortune);
-  soundToggle.addEventListener('click', () => {
-    allowSound = !allowSound;
-    soundToggle.setAttribute('aria-pressed', String(allowSound));
-  });
 
   // Init
   buildGrid();

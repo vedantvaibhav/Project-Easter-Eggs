@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Placeholder Fortune Images</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .instructions {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .image-placeholder {
+            width: 120px;
+            height: 120px;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f9f9f9;
+            color: #666;
+            font-size: 12px;
+            text-align: center;
+        }
+        .fortune-list {
+            margin-top: 20px;
+        }
+        .fortune-item {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+        .fortune-number {
+            font-weight: bold;
+            color: #007bff;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fortune Card System Setup</h1>
+        
+        <div class="instructions">
+            <h3>Instructions:</h3>
+            <p>1. Replace the placeholder images in <code>/assets/fortune/</code> folder with your actual 30 images</p>
+            <p>2. Name them: <code>fortune-1.png</code>, <code>fortune-2.png</code>, ..., <code>fortune-30.png</code></p>
+            <p>3. Update the quotes in <code>fortune-data.js</code> if needed</p>
+            <p>4. The system will automatically match image 1 with quote 1, image 2 with quote 2, etc.</p>
+        </div>
+
+        <h3>Fortune Images Structure:</h3>
+        <div class="image-grid">
+            <div class="image-placeholder">fortune-1.png</div>
+            <div class="image-placeholder">fortune-2.png</div>
+            <div class="image-placeholder">fortune-3.png</div>
+            <div class="image-placeholder">fortune-4.png</div>
+            <div class="image-placeholder">fortune-5.png</div>
+            <div class="image-placeholder">fortune-6.png</div>
+            <div class="image-placeholder">fortune-7.png</div>
+            <div class="image-placeholder">fortune-8.png</div>
+            <div class="image-placeholder">fortune-9.png</div>
+            <div class="image-placeholder">fortune-10.png</div>
+            <div class="image-placeholder">fortune-11.png</div>
+            <div class="image-placeholder">fortune-12.png</div>
+            <div class="image-placeholder">fortune-13.png</div>
+            <div class="image-placeholder">fortune-14.png</div>
+            <div class="image-placeholder">fortune-15.png</div>
+            <div class="image-placeholder">fortune-16.png</div>
+            <div class="image-placeholder">fortune-17.png</div>
+            <div class="image-placeholder">fortune-18.png</div>
+            <div class="image-placeholder">fortune-19.png</div>
+            <div class="image-placeholder">fortune-20.png</div>
+            <div class="image-placeholder">fortune-21.png</div>
+            <div class="image-placeholder">fortune-22.png</div>
+            <div class="image-placeholder">fortune-23.png</div>
+            <div class="image-placeholder">fortune-24.png</div>
+            <div class="image-placeholder">fortune-25.png</div>
+            <div class="image-placeholder">fortune-26.png</div>
+            <div class="image-placeholder">fortune-27.png</div>
+            <div class="image-placeholder">fortune-28.png</div>
+            <div class="image-placeholder">fortune-29.png</div>
+            <div class="image-placeholder">fortune-30.png</div>
+        </div>
+
+        <h3>Current Fortune Quotes (1-30):</h3>
+        <div class="fortune-list">
+            <div class="fortune-item"><span class="fortune-number">1.</span> A fresh start will put you on your way.</div>
+            <div class="fortune-item"><span class="fortune-number">2.</span> Adventure can be real happiness.</div>
+            <div class="fortune-item"><span class="fortune-number">3.</span> All the effort you are making will ultimately pay off.</div>
+            <div class="fortune-item"><span class="fortune-number">4.</span> Believe it can be done.</div>
+            <div class="fortune-item"><span class="fortune-number">5.</span> Bide your time; for success is near.</div>
+            <div class="fortune-item"><span class="fortune-number">6.</span> Do not fear what you don't know.</div>
+            <div class="fortune-item"><span class="fortune-number">7.</span> Every flower blooms in its own sweet time.</div>
+            <div class="fortune-item"><span class="fortune-number">8.</span> Fortune favors the bold.</div>
+            <div class="fortune-item"><span class="fortune-number">9.</span> Happiness begins with facing life with a smile.</div>
+            <div class="fortune-item"><span class="fortune-number">10.</span> Now is the time to try something new.</div>
+            <div class="fortune-item"><span class="fortune-number">11.</span> Serendipity will lead you to pleasant surprises.</div>
+            <div class="fortune-item"><span class="fortune-number">12.</span> Simplicity and clarity should be your theme in dress.</div>
+            <div class="fortune-item"><span class="fortune-number">13.</span> Soon life will become more interesting.</div>
+            <div class="fortune-item"><span class="fortune-number">14.</span> Success is a journey, not a destination.</div>
+            <div class="fortune-item"><span class="fortune-number">15.</span> The early bird gets the worm, but the second mouse gets the cheese.</div>
+            <div class="fortune-item"><span class="fortune-number">16.</span> Your abilities are unparalleled.</div>
+            <div class="fortune-item"><span class="fortune-number">17.</span> You will conquer obstacles to achieve success.</div>
+            <div class="fortune-item"><span class="fortune-number">18.</span> You will find great contentment in the daily, simple things.</div>
+            <div class="fortune-item"><span class="fortune-number">19.</span> Take the chance while you still have the choice.</div>
+            <div class="fortune-item"><span class="fortune-number">20.</span> A golden opportunity is coming your way.</div>
+            <div class="fortune-item"><span class="fortune-number">21.</span> Your kindness is about to be repaid. 💖</div>
+            <div class="fortune-item"><span class="fortune-number">22.</span> A pleasant surprise awaits you this week.</div>
+            <div class="fortune-item"><span class="fortune-number">23.</span> Expect to be dazzled by a happy coincidence.</div>
+            <div class="fortune-item"><span class="fortune-number">24.</span> Watch for doors opening where there were none.</div>
+            <div class="fortune-item"><span class="fortune-number">25.</span> Your creativity will lead to unexpected opportunities.</div>
+            <div class="fortune-item"><span class="fortune-number">26.</span> A new friendship will bring joy to your life.</div>
+            <div class="fortune-item"><span class="fortune-number">27.</span> Trust your instincts - they will guide you well.</div>
+            <div class="fortune-item"><span class="fortune-number">28.</span> The universe is conspiring in your favor.</div>
+            <div class="fortune-item"><span class="fortune-number">29.</span> Your positive energy will attract wonderful things.</div>
+            <div class="fortune-item"><span class="fortune-number">30.</span> Today marks the beginning of your greatest adventure.</div>
+        </div>
+    </div>
+</body>
+</html>
