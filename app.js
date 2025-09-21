@@ -1,9 +1,10 @@
 (() => {
   const grid = document.getElementById('eggGrid');
-  const panel = document.getElementById('fortuneOverlay');
+  const panel = document.getElementById('fortunePanel');
   const fortuneText = document.getElementById('fortuneText');
-  const againBtn = document.getElementById('tryAgain');
-  const shareBtn = document.getElementById('shareFortune');
+  const againBtn = document.getElementById('againBtn');
+  const shareBtn = document.getElementById('shareBtn');
+  const ribbon = document.getElementById('fortuneRibbon');
   const burstLayer = document.getElementById('burstLayer');
 
   // Use fortune data from fortune-data.js
@@ -103,6 +104,11 @@
     isTransitioning = true;
     egg.classList.add('cracked');
 
+    // Haptic feedback
+    if (navigator.vibrate) {
+      navigator.vibrate(50); // Short vibration for egg click
+    }
+
     if (allowSound) playCrack();
 
     // After crack animation, flash burst, then show fortune overlay
@@ -113,8 +119,8 @@
         const text = isGolden ? GOLDEN_FORTUNE : getRandomFortune();
         showFortune(text, isGolden);
         isTransitioning = false;
-      }, 520);
-    }, 650);
+      }, 300);
+    }, 400);
   }
 
   function getRandomFortune() {
@@ -123,35 +129,6 @@
   }
 
   function showFortune(text, isGolden) {
-    // Check if mobile device (more comprehensive detection)
-    const screenWidth = window.innerWidth;
-    const userAgent = navigator.userAgent;
-    const hasTouch = 'ontouchstart' in window;
-    
-    const isMobile = screenWidth <= 640 || 
-                    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent) ||
-                    hasTouch;
-    
-    console.log('Mobile Detection:', {
-      screenWidth,
-      userAgent: userAgent.substring(0, 50) + '...',
-      hasTouch,
-      isMobile
-    });
-    
-    if (isMobile) {
-      console.log('Redirecting to mobile fortune page...');
-      // Redirect to mobile fortune page
-      const params = new URLSearchParams({
-        fortune: text,
-        golden: isGolden
-      });
-      window.location.href = `./mobile-fortune.html?${params.toString()}`;
-      return;
-    }
-
-    console.log('Using desktop fortune display...');
-    // Desktop behavior
     panel.classList.remove('hidden');
     panel.setAttribute('aria-hidden', 'false');
     fortuneText.textContent = '';
@@ -247,48 +224,65 @@
   }
 
   // Swipe gestures: swipe to move focus, tap to open
-  let touchStartX = 0, touchStartY = 0, touchMoved = false;
+  let touchStartX = 0, touchStartY = 0, touchMoved = false, swipeProcessed = false;
   function attachSwipe() {
     grid.addEventListener('touchstart', (e) => {
       if (!e.touches[0]) return;
       touchMoved = false;
-      touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY;
+      swipeProcessed = false;
+      touchStartX = e.touches[0].clientX; 
+      touchStartY = e.touches[0].clientY;
     }, { passive: true });
+    
     grid.addEventListener('touchmove', (e) => {
-      if (!e.touches[0]) return;
+      if (!e.touches[0] || swipeProcessed) return;
       const dx = e.touches[0].clientX - touchStartX;
       const dy = e.touches[0].clientY - touchStartY;
-      if (Math.hypot(dx, dy) < 18) return;
+      const distance = Math.hypot(dx, dy);
+      
+      // Require minimum swipe distance
+      if (distance < 50) return;
+      
       touchMoved = true;
+      swipeProcessed = true; // Prevent multiple swipes
+      
+      // Determine swipe direction
       if (Math.abs(dx) > Math.abs(dy)) {
-        focusedIndex = dx > 0 ? Math.min(focusedIndex + 1, eggs.length - 1) : Math.max(focusedIndex - 1, 0);
+        // Horizontal swipe
+        if (dx > 0) {
+          // Swipe right - move to next egg
+          focusedIndex = Math.min(focusedIndex + 1, eggs.length - 1);
+        } else {
+          // Swipe left - move to previous egg
+          focusedIndex = Math.max(focusedIndex - 1, 0);
+        }
       } else {
+        // Vertical swipe
         const cols = getComputedStyle(grid).gridTemplateColumns.split(' ').length;
-        focusedIndex = dy > 0 ? Math.min(focusedIndex + cols, eggs.length - 1) : Math.max(focusedIndex - cols, 0);
+        if (dy > 0) {
+          // Swipe down - move down a row
+          focusedIndex = Math.min(focusedIndex + cols, eggs.length - 1);
+        } else {
+          // Swipe up - move up a row
+          focusedIndex = Math.max(focusedIndex - cols, 0);
+        }
       }
+      
       updateFocus();
-      touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY;
     }, { passive: true });
+    
     grid.addEventListener('touchend', (e) => {
-      if (!touchMoved) openEgg(focusedIndex);
+      if (!touchMoved) {
+        openEgg(focusedIndex);
+      }
+      // Reset for next swipe
+      swipeProcessed = false;
     });
   }
 
   // Events
-  console.log('againBtn:', againBtn);
-  console.log('shareBtn:', shareBtn);
-  
-  if (againBtn) {
-    againBtn.addEventListener('click', resetGame);
-  } else {
-    console.error('againBtn is null');
-  }
-  
-  if (shareBtn) {
-    shareBtn.addEventListener('click', shareFortune);
-  } else {
-    console.error('shareBtn is null');
-  }
+  againBtn.addEventListener('click', resetGame);
+  shareBtn.addEventListener('click', shareFortune);
 
   // Init
   buildGrid();
