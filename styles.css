@@ -91,7 +91,6 @@ body {
 @property --shake-x { syntax: '<length>'; inherits: false; initial-value: 0px; }
 @property --shake-y { syntax: '<length>'; inherits: false; initial-value: 0px; }
 .egg-icon {
-  --hover-transform: scale(1) rotate(0deg) rotateY(0deg);
   --shake-x: 0px;
   --shake-y: 0px;
   --click-tilt-x: 0px;
@@ -104,25 +103,11 @@ body {
   transition: transform .35s ease; /* For smooth transition into/out of hover state */
   transition-property: transform; /* Ensure swipe rotation is immediate */
   will-change: transform;
-  /* This order is crucial: click/shake effects first, then swipe rotate, then hover transform */
-  transform: translate(calc(var(--shake-x) + var(--click-tilt-x)), calc(var(--shake-y) + var(--click-tilt-y))) rotate(var(--click-tilt-rot)) rotate(var(--swipe-rot)) var(--hover-transform);
+  /* This order is crucial: click/shake effects first, then swipe rotate */
+  transform: translate(calc(var(--shake-x) + var(--click-tilt-x)), calc(var(--shake-y) + var(--click-tilt-y))) rotate(var(--click-tilt-rot)) rotate(var(--swipe-rot));
 }
 
-.egg-tile:hover { box-shadow: none; z-index: 3; }
-.egg-tile:hover .egg-icon {
-  --hover-transform: scale(1.28) rotate(-10deg) rotateY(18deg); /* This sets the hover transform */
-  transition: transform .46s cubic-bezier(.34,1.56,.64,1); /* Bouncier transition for hover */
-  filter: none;
-  /* Removed: animation: none !important; and reset of click vars. */
-}
 
-.egg-tile:hover .egg-icon.animating { --hover-transform: none; /* allow click animation to run; do not cancel animation */ }
-
-@keyframes egg-bounce { /* Updated for hover effect */
-  0% { transform: scale(1) rotate(0deg) rotateY(0deg); }
-  60% { transform: scale(1.32) rotate(-12deg) rotateY(22deg); }
-  100% { transform: scale(1.28) rotate(-18deg) rotateY(18deg); }
-}
 
 /* Click animation (rotate/slide only, no scale) */
 .egg-icon.bounce-click { animation: egg-click-tilt 420ms cubic-bezier(.34,1.56,.64,1) both; }
@@ -713,17 +698,4 @@ body {
   }
 }
 
-/* Mobile swipe rotation - immediate, no transition */
-.egg-icon.swipe-rotating {
-  transition: none !important;
-}
-
-/* Rotate on swipe animation */
-@keyframes focus-rotate {
-  0% { transform: rotate(-8deg); }
-  100% { transform: rotate(0deg); }
-}
-
-/* Applied to the focused egg icon briefly on swipe */
-.egg-icon.swipe-rotate { animation: focus-rotate 240ms ease both; }
 
