@@ -224,7 +224,7 @@
   }
 
   // Swipe gestures: swipe to move focus, tap to open
-  let touchStartX = 0, touchStartY = 0, touchMoved = false, swipeProcessed = false;
+  let touchStartX = 0, touchStartY = 0, touchMoved = false, swipeProcessed = false, touchStartTime = 0;
   function attachSwipe() {
     grid.addEventListener('touchstart', (e) => {
       if (!e.touches[0]) return;
@@ -232,6 +232,7 @@
       swipeProcessed = false;
       touchStartX = e.touches[0].clientX; 
       touchStartY = e.touches[0].clientY;
+      touchStartTime = Date.now();
     }, { passive: true });
     
     grid.addEventListener('touchmove', (e) => {
@@ -240,10 +241,14 @@
       const dy = e.touches[0].clientY - touchStartY;
       const distance = Math.hypot(dx, dy);
       
-      // Require minimum swipe distance
+      // Mark as moved if distance exceeds threshold
+      if (distance > 10) {
+        touchMoved = true;
+      }
+      
+      // Require minimum swipe distance for navigation
       if (distance < 50) return;
       
-      touchMoved = true;
       swipeProcessed = true; // Prevent multiple swipes
       
       // Determine swipe direction
@@ -272,10 +277,17 @@
     }, { passive: true });
     
     grid.addEventListener('touchend', (e) => {
-      if (!touchMoved) {
+      const touchDuration = Date.now() - touchStartTime;
+      
+      // Only open egg if:
+      // 1. No significant movement (< 10px)
+      // 2. Touch duration is reasonable (not too long or too short)
+      // 3. No swipe was processed
+      if (!touchMoved && !swipeProcessed && touchDuration > 50 && touchDuration < 500) {
         openEgg(focusedIndex);
       }
-      // Reset for next swipe
+      
+      // Reset for next interaction
       swipeProcessed = false;
     });
   }
