@@ -1,10 +1,9 @@
 (() => {
   const grid = document.getElementById('eggGrid');
-  const panel = document.getElementById('fortunePanel');
+  const panel = document.getElementById('fortuneOverlay');
   const fortuneText = document.getElementById('fortuneText');
-  const againBtn = document.getElementById('againBtn');
-  const shareBtn = document.getElementById('shareBtn');
-  const ribbon = document.getElementById('fortuneRibbon');
+  const againBtn = document.getElementById('tryAgain');
+  const shareBtn = document.getElementById('shareFortune');
   const burstLayer = document.getElementById('burstLayer');
 
   // Use fortune data from fortune-data.js
@@ -124,6 +123,35 @@
   }
 
   function showFortune(text, isGolden) {
+    // Check if mobile device (more comprehensive detection)
+    const screenWidth = window.innerWidth;
+    const userAgent = navigator.userAgent;
+    const hasTouch = 'ontouchstart' in window;
+    
+    const isMobile = screenWidth <= 640 || 
+                    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent) ||
+                    hasTouch;
+    
+    console.log('Mobile Detection:', {
+      screenWidth,
+      userAgent: userAgent.substring(0, 50) + '...',
+      hasTouch,
+      isMobile
+    });
+    
+    if (isMobile) {
+      console.log('Redirecting to mobile fortune page...');
+      // Redirect to mobile fortune page
+      const params = new URLSearchParams({
+        fortune: text,
+        golden: isGolden
+      });
+      window.location.href = `./mobile-fortune.html?${params.toString()}`;
+      return;
+    }
+
+    console.log('Using desktop fortune display...');
+    // Desktop behavior
     panel.classList.remove('hidden');
     panel.setAttribute('aria-hidden', 'false');
     fortuneText.textContent = '';
@@ -247,8 +275,20 @@
   }
 
   // Events
-  againBtn.addEventListener('click', resetGame);
-  shareBtn.addEventListener('click', shareFortune);
+  console.log('againBtn:', againBtn);
+  console.log('shareBtn:', shareBtn);
+  
+  if (againBtn) {
+    againBtn.addEventListener('click', resetGame);
+  } else {
+    console.error('againBtn is null');
+  }
+  
+  if (shareBtn) {
+    shareBtn.addEventListener('click', shareFortune);
+  } else {
+    console.error('shareBtn is null');
+  }
 
   // Init
   buildGrid();
