@@ -587,6 +587,21 @@ body {
   height: 100% !important;
 }
 
+/* Mobile-specific scroll disable when modal is open */
+@media (max-width: 640px) {
+  .no-scroll {
+    overflow-y: hidden !important;
+    overflow-x: hidden !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+  }
+}
+
 /* White radial overlay for message appearance */
 .radial-overlay {
   position: fixed;
@@ -664,25 +679,38 @@ body {
 /* Default hidden mobile subtext on larger screens */
 .hero-sub-mobile { display: none; }
 
+/* Mobile image-based text - hidden by default */
+.hero-mobile-images { display: none; }
+
 /* Mobile typography adjustments */
 @media (max-width: 640px) {
   body {
     padding-top: 50px;
   }
+  
+  /* Hide text-based hero elements on mobile */
   .hero-title {
-    color: #FFF;
-    font-family: "Bonello", "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    font-size: 36px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
+    display: none;
   }
   .hero-sub { 
-    display: flex !important; 
-    font-size: 14px;
+    display: none !important;
   }
   .hero-sub-mobile {
     display: none !important;
+  }
+  
+  /* Show image-based hero elements on mobile */
+  .hero-mobile-images {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .hero-mobile-img {
+    max-width: 300px;
+    height: auto;
+    display: block;
   }
   /* Visual cue for focused egg on mobile */
   .egg-tile.is-focused .egg-icon {
