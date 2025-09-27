@@ -579,8 +579,13 @@ body {
   }
 }
 
-/* Disable scroll during ripple */
-.no-scroll { overflow: hidden !important; }
+/* Disable scroll during ripple and modal */
+.no-scroll { 
+  overflow: hidden !important; 
+  position: fixed !important;
+  width: 100% !important;
+  height: 100% !important;
+}
 
 /* White radial overlay for message appearance */
 .radial-overlay {
@@ -737,14 +742,14 @@ body {
   .fortune-card {
     display: flex;
     width: calc(100vw - 40px);
-    max-width: 400px;
+    max-width: 350px;
     height: auto;
-    max-height: 500px;
-    min-height: 80vh;
-    padding: 24px;
+    max-height: 320px;
+    min-height: 50vh;
+    padding: 16px;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 12px;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(8px);
     border-radius: 20px;
@@ -756,7 +761,7 @@ body {
   
   .fortune-image {
     width: 100%;
-    height: 400px;
+    height: 180px;
     border-radius: 16px;
     margin: 0;
     flex-shrink: 0;
@@ -784,6 +789,7 @@ body {
     justify-content: center;
     text-align: center;
     flex-shrink: 0;
+    height: 60px;
   }
   
   .card-actions {
@@ -792,14 +798,19 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
     flex-shrink: 0;
   }
   
+  /* Hide Share button on mobile */
+  .card-actions #shareFortune {
+    display: none;
+  }
+  
   .action-btn {
-    width: 100%;
-    margin: 0;
-    height: 48px;
+    width: 340px;
+    margin: 0 48px;
+    height: 40px;
     border-radius: 12px;
     font-weight: 500;
   }

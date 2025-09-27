@@ -68,6 +68,11 @@
       const centerLeft = rect.left + rect.width / 2;
       const centerTop = rect.top + rect.height / 2;
 
+      // Add haptic feedback for mobile
+      if (navigator.vibrate) {
+        navigator.vibrate([50, 30, 50]); // Short vibration pattern
+      }
+
       // Disable scroll during VFX sequence
       document.body.classList.add('no-scroll');
 
@@ -450,7 +455,7 @@
       }, { passive: true });
 
       // One-step swipe with haptic feedback
-      let startX = 0, startY = 0, tracking = false;
+      let startX = 0, startY = 0, tracking = false, isSwipe = false;
       const threshold = 24;
       function haptic(){
         // Try vibration first
@@ -478,6 +483,7 @@
         const dy = e.touches[0].clientY - startY;
         if (Math.abs(dx) < threshold && Math.abs(dy) < threshold) return;
         if (Math.abs(dx) > Math.abs(dy)) {
+          isSwipe = true; // Mark as swipe gesture
           const dir = dx > 0 ? -1 : 1; // step one card
           // Rotate current egg during swipe
           const currentIcon = tiles[index]?.querySelector('.egg-icon');
@@ -489,14 +495,16 @@
           startX = e.touches[0].clientX; startY = e.touches[0].clientY;
         }
       }, { passive: true });
-      grid.addEventListener('touchend', ()=>{ tracking = false; });
-
-      // Tap on centered tile to open fortune
       grid.addEventListener('touchend', (e)=>{
-        const focused = tiles[index];
-        if (!focused) return;
-        const touchedTile = e.target.closest('.egg-tile');
-        if (touchedTile === focused) focused.click();
+        tracking = false;
+        // Only open egg if it was a tap (not a swipe)
+        if (!isSwipe) {
+          const focused = tiles[index];
+          if (!focused) return;
+          const touchedTile = e.target.closest('.egg-tile');
+          if (touchedTile === focused) focused.click();
+        }
+        isSwipe = false; // Reset swipe flag
       });
     }
 
