@@ -3,7 +3,7 @@
 html { height: 100%; }
 body {
   margin: 0;
-  font-family: "Nunito", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   background-image: url('./assets/pastel-bg.png');
   background-repeat: no-repeat;
   background-size: cover;
@@ -29,7 +29,7 @@ body {
 .hero-title {
   margin: 0 0 -16px;
   color: #FFF;
-  font-family: Bonello, "Nunito", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-family: "Bonello", "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 48px;
   font-style: normal;
   font-weight: 400;
@@ -39,7 +39,7 @@ body {
 .hero-sub {
   color: #FFF;
   text-align: center;
-  font-family: Baskervville, serif;
+  font-family: "Baskervville", "Times New Roman", Times, "Liberation Serif", "DejaVu Serif", serif;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -248,7 +248,7 @@ body {
   z-index: 202; /* card above everything */
   opacity: 1 !important;
   animation: card-3d-spin-in 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s ease;
   transform-style: preserve-3d;
   perspective: 1000px;
   cursor: pointer;
@@ -259,14 +259,32 @@ body {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255, 200, 150, 0.4), transparent 70%);
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(213, 213, 213, 0.4), transparent 70%);
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity 0.3s ease;
 }
 
 .fortune-card.hovering::before {
   opacity: 1;
+}
+
+.fortune-card.hovering {
+  animation: none !important;
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.15),
+    0 0 40px rgba(255, 255, 255, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Prevent animation restart after hover ends, but allow it to run initially */
+.fortune-card.animation-complete {
+  animation: none !important;
+}
+
+/* Ensure the initial animation can run when the class is removed */
+.fortune-card:not(.animation-complete) {
+  animation: card-3d-spin-in 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
 .fortune-image {
@@ -392,7 +410,7 @@ body {
   margin: 0; 
   color: var(--text-default, #18181A);
   text-align: center;
-  font-family: var(--Font-family-font-family-body, Inter), system-ui, -apple-system, sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: var(--Font-size-text-md, 16px);
   font-style: normal;
   font-weight: 400;
@@ -431,7 +449,7 @@ body {
   gap: 8px;
   flex: 1 0 0;
   color: var(--text-tertiary, #71717A);
-  font-family: "General Sans", system-ui, -apple-system, sans-serif;
+  font-family: "General Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
@@ -615,7 +633,7 @@ body {
   }
   .hero-title {
     color: #FFF;
-    font-family: Bonello, "Nunito", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    font-family: "Bonello", "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     font-size: 36px;
     font-style: normal;
     font-weight: 400;

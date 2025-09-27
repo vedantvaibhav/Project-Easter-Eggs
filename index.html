@@ -7,7 +7,9 @@
   <link rel="icon" type="image/png" href="./assets/eggs/eggs-01.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Baskervville:wght@400&family=Inter:wght@400&display=swap" rel="stylesheet" />
+  <!-- Preload critical fonts for better mobile performance -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Baskervville:wght@400&family=Inter:wght@400&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Baskervville:wght@400&family=Inter:wght@400&display=swap" rel="stylesheet" /></noscript>
   <link rel="stylesheet" href="./styles.css" />
   <script src="./fortune-data.js"></script>
   <script src="./app.js"></script>
@@ -154,6 +156,24 @@
           // Show overlay properly
           overlay.classList.remove('hidden', 'closing');
           overlay.classList.add('showing');
+          
+          // Reset animation state for new fortune card
+          const card = document.querySelector('.fortune-card');
+          if (card) {
+            card.classList.remove('animation-complete');
+          }
+          
+          // Initialize hover effect for the fortune card
+          setTimeout(() => {
+            initFortuneCardHover();
+            // Mark animation as complete after initial animation finishes
+            setTimeout(() => {
+              const card = document.querySelector('.fortune-card');
+              if (card) {
+                card.classList.add('animation-complete');
+              }
+            }, 800); // Wait for the card-3d-spin-in animation to complete
+          }, 100);
           
           console.log('Overlay should be visible now', overlay);
         }, 200);
@@ -488,34 +508,57 @@
     window.addEventListener('resize', () => { if (isMobile()) initInfiniteCarousel(); });
   })();
 
-  // Fortune card hover effect
-  (function() {
+  // Fortune card hover effect with enhanced 3D tilt
+  function initFortuneCardHover() {
     const card = document.querySelector('.fortune-card');
-    if (!card) return;
+    console.log('initFortuneCardHover called, card found:', !!card);
+    
+    if (!card) {
+      console.log('No fortune card found, aborting hover initialization');
+      return;
+    }
 
-    card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
+    console.log('Setting up hover effect for fortune card');
+
+    // Remove any existing event listeners by cloning the element
+    const newCard = card.cloneNode(true);
+    card.parentNode.replaceChild(newCard, card);
+
+    newCard.addEventListener('mousemove', (e) => {
+      console.log('Mouse move detected on fortune card');
+      const rect = newCard.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
 
-      // Calculate rotation (max 8° tilt)
-      const rotateX = ((y - centerY) / centerY) * 8;
-      const rotateY = ((x - centerX) / centerX) * -8;
+      // Calculate rotation with more pronounced 3D tilt effect
+      // Increased rotation range for more dramatic effect
+      const rotateX = ((y - centerY) / centerY) * 15; // Increased from 8 to 15
+      const rotateY = ((x - centerX) / centerX) * -15; // Increased from 8 to 15
+      
+      // Add subtle scale and translate for lift effect
+      const scale = 1.02; // More subtle scale
+      const translateZ = 10; // Reduced Z translation for subtlety
 
-      card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
-      card.style.setProperty('--x', `${(x / rect.width) * 100}%`);
-      card.style.setProperty('--y', `${(y / rect.height) * 100}%`);
+      newCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${scale}) translateZ(${translateZ}px)`;
+      newCard.style.setProperty('--x', `${(x / rect.width) * 100}%`);
+      newCard.style.setProperty('--y', `${(y / rect.height) * 100}%`);
 
-      card.classList.add('hovering');
+      newCard.classList.add('hovering');
     });
 
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-      card.classList.remove('hovering');
+    newCard.addEventListener('mouseleave', () => {
+      console.log('Mouse leave detected on fortune card');
+      // Reset to original state without triggering the animation
+      newCard.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1) translateZ(0px)';
+      newCard.style.setProperty('--x', '50%');
+      newCard.style.setProperty('--y', '50%');
+      newCard.classList.remove('hovering');
     });
-  })();
+    
+    console.log('Hover effect initialized successfully');
+  }
   </script>
 </body>
 </html>
