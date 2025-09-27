@@ -693,6 +693,10 @@ body {
 
 /* Mobile carousel: show parts of adjacent cards */
 @media (max-width: 640px) {
+  body {
+    overflow-y: hidden;
+    height: 100vh;
+  }
   .board { padding: 24px 0 48px; }
   .egg-grid {
     display: flex;
@@ -798,6 +802,7 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 8px;
     flex-shrink: 0;
   }
@@ -808,8 +813,8 @@ body {
   }
   
   .action-btn {
-    width: 340px;
-    margin: 0 48px;
+    width: 350px;
+    margin: 0 auto;
     height: 40px;
     border-radius: 12px;
     font-weight: 500;
