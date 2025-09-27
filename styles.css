@@ -696,7 +696,7 @@ body {
   .board { padding: 24px 0 48px; }
   .egg-grid {
     display: flex;
-    overflow-x: auto;
+    overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
     scroll-snap-type: x mandatory;
     gap: 16px;
